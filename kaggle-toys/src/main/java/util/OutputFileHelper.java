@@ -20,7 +20,7 @@ public class OutputFileHelper {
 	
 	public OutputFileHelper() {
 		Calendar calendar = Calendar.getInstance();
-		String name = calendar.get(Calendar.YEAR) + "_" + calendar.get(Calendar.MONTH) + "_" + calendar.get(Calendar.DAY_OF_MONTH) + "_" +calendar.get(Calendar.HOUR_OF_DAY) + "_" +calendar.get(Calendar.MINUTE);
+		String name = calendar.get(Calendar.YEAR) + "_" + (calendar.get(Calendar.MONTH) + 1) + "_" + calendar.get(Calendar.DAY_OF_MONTH) + "_" +calendar.get(Calendar.HOUR_OF_DAY) + "_" +calendar.get(Calendar.MINUTE);
 		fileName = outputFolder + name;
 		
 		try {

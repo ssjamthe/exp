@@ -13,7 +13,8 @@ public class TimeHelper {
 
 	static {
 		Calendar c = Calendar.getInstance();
-		c.set(2014, 1, 1, 0, 0);
+		c.clear();
+		c.set(2014, 0, 1, 0, 0);
 		FIRST_JAN = c.getTimeInMillis();
 	}
 
@@ -21,20 +22,22 @@ public class TimeHelper {
 		Calendar c = Calendar.getInstance();
 
 		String[] splits = timeStr.split("\\s+");
-
-		c.set(Integer.parseInt(splits[0]), Integer.parseInt(splits[1]),
+		
+		c.clear();
+		c.set(Integer.parseInt(splits[0]), Integer.parseInt(splits[1]) - 1,
 				Integer.parseInt(splits[2]), Integer.parseInt(splits[3]),
 				Integer.parseInt(splits[4]));
+		
 
-		return (int) (c.getTimeInMillis() - FIRST_JAN) / (1000*60);
+		return (int) ((c.getTimeInMillis() - FIRST_JAN) / (1000*60));
 	}
 
 	public static String convertToString(int time) {
 		Calendar c = Calendar.getInstance();
-		c.set(2014, 1, 1,0,0);
+		c.set(2014, 0, 1,0,0);
 		c.add(Calendar.MINUTE, time);
 
-		return c.get(Calendar.YEAR) + " " + c.get(Calendar.MONTH) + " "
+		return c.get(Calendar.YEAR) + " " + (c.get(Calendar.MONTH) + 1) + " "
 				+ c.get(Calendar.DAY_OF_MONTH) + " " + c.get(Calendar.HOUR_OF_DAY)
 				+ " " + c.get(Calendar.MINUTE);
 	}
@@ -49,7 +52,7 @@ public class TimeHelper {
 		{
 			return startSanctionedTime;
 		}
-		else if(time > endSanctionedTime)
+		else if(time >= endSanctionedTime)
 		{
 			int nextDaySameTime = time + MIN_IN_DAY;
 			

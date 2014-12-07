@@ -151,5 +151,19 @@ public class ElveTest {
 				+ TimeHelper.convertToString(elve.getNextAvailableTime()));
 		
 	}
+	
+	@Test
+	public void testCalculateFinishTime()
+	{
+		Elve elve = new Elve("1");
+		//elve.setNextAvailableTime(TimeHelper.parseTime("2014 1 1 0 44"));
+
+		Toy toy = new Toy();
+		toy.setValues("1", "2014 1 1 15 44", 2);
+		
+		System.out.println("Calculated Finish Time : " + TimeHelper.convertToString(elve.calculateFinishTime(toy)));
+		System.out.println("Elve next available time : " + TimeHelper.convertToString(elve.getNextAvailableTime()));
+		
+	}
 
 }

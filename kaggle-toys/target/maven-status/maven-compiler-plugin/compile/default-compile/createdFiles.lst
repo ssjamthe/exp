@@ -1,6 +1,7 @@
 util\TimeHelper.class
 util\OutputFileHelper.class
 data\ElveTest.class
+process\SecondApproach.class
 process\FirstApproach$ElveComparator.class
 process\FirstApproach$1.class
 util\ToysFileReader.class

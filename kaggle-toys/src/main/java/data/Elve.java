@@ -9,7 +9,7 @@ import util.TimeHelper;
  */
 public class Elve {
 	
-	private static final long FIRST_JAN;
+	
 	private static final int MIN_IN_DAY = 24*60;
 	private static final int START_SANCTIONED_IN_DAY = 9*60;
 	private static final int END_SANCTIONED_IN_DAY = 19*60;
@@ -20,12 +20,7 @@ public class Elve {
 	private double rating = 1.0;
 	private int nextAvailableTime=540;
 	
-	static
-	{
-		Calendar c = Calendar.getInstance();
-		c.set(2014, 1, 1, 0, 0);
-		FIRST_JAN = c.getTimeInMillis();
-	}
+	
 	
 	public static class WorkInfo
 	{
@@ -145,6 +140,14 @@ public class Elve {
 		workInfo.startTime = startTime;
 		workInfo.duration = timeRequired;
 		return workInfo;
+	}
+	
+	public int calculateFinishTime(Toy toy)
+	{
+		int startTime = toy.getArrivalTime() > this.nextAvailableTime?toy.getArrivalTime():this.nextAvailableTime;
+		startTime = TimeHelper.getNextStartTime(startTime);
+		int timeRequired = (int) Math.ceil(toy.getTimeToBuild()/this.rating);
+		return (startTime + timeRequired);
 	}
 	
 	private void updateAvailableTime(int startTime,int sanctionedMinutes,int unsanctionedMinutes)

@@ -85,7 +85,7 @@
       <configuration>
         <archive>
           <manifest>
-            <mainClass>process.FirstApproach</mainClass>
+            <mainClass>process.SecondApproach</mainClass>
           </manifest>
         </archive>
         <descriptorRefs>
