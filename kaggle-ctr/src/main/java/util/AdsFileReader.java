@@ -13,12 +13,12 @@ public class AdsFileReader {
 	private BufferedReader bufferedReader;
 	private long adsRead = 0;
 	
-	public AdsFileReader()
+	public AdsFileReader(String file)
 	{
 		try {
 			bufferedReader = new BufferedReader(
 					new FileReader(
-							"D:\\Kaggle\\AvazuCtrPrediction\\train\\demo.csv"));
+							file));
 			bufferedReader.readLine();
 			adsRead++;
 			if(adsRead % 10000 == 0)

@@ -1,8 +1,9 @@
 D:\Kaggle\gitrepo\Kaggle\kaggle-ctr\src\main\java\util\AdsFileReader.java
 D:\Kaggle\gitrepo\Kaggle\kaggle-ctr\src\main\java\util\ProcessedTraningFileCreator.java
-D:\Kaggle\gitrepo\Kaggle\kaggle-ctr\src\main\java\pig\DistinctValuesPigRunner.java
 D:\Kaggle\gitrepo\Kaggle\kaggle-ctr\src\main\java\data\Feature.java
+D:\Kaggle\gitrepo\Kaggle\kaggle-ctr\src\main\java\pig\DistinctValuesPigRunner.java
 D:\Kaggle\gitrepo\Kaggle\kaggle-ctr\src\main\java\process\LRFirstApproach.java
 D:\Kaggle\gitrepo\Kaggle\kaggle-ctr\src\main\java\data\AdInstance.java
 D:\Kaggle\gitrepo\Kaggle\kaggle-ctr\src\main\java\data\Field.java
+D:\Kaggle\gitrepo\Kaggle\kaggle-ctr\src\main\java\util\IndexedFeatureTrainer.java
 D:\Kaggle\gitrepo\Kaggle\kaggle-ctr\src\main\java\util\FeatureValuesIndexMapper.java
