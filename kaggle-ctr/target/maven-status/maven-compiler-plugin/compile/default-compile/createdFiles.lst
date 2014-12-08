@@ -1,1 +1,8 @@
+data\AdInstance.class
+data\Feature.class
+util\FeatureValuesIndexMapper.class
 pig\DistinctValuesPigRunner.class
+util\ProcessedTraningFileCreator.class
+process\LRFirstApproach.class
+data\Field.class
+util\AdsFileReader.class

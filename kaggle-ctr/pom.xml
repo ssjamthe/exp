@@ -63,6 +63,19 @@
       <artifactId>antlr-runtime</artifactId>
       <version>3.4</version>
     </dependency>
+    
+    <dependency>
+	<groupId>org.apache.mahout</groupId>
+	<artifactId>mahout-core</artifactId>
+	<version>0.9</version>
+</dependency>
+
+<dependency>
+	<groupId>org.apache.mahout</groupId>
+	<artifactId>mahout-utils</artifactId>
+	<version>0.5</version>
+</dependency>
+
 	
   	
   </dependencies>
@@ -85,7 +98,7 @@
       <configuration>
         <archive>
           <manifest>
-            <mainClass>pig.DistinctValuesPigRunner</mainClass>
+            <mainClass>process.LRFirstApproach</mainClass>
           </manifest>
         </archive>
         <descriptorRefs>

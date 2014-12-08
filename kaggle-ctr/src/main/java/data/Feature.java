@@ -27,10 +27,13 @@ public class Feature {
 	public String getFeatureValue(AdInstance ad)
 	{
 		StringBuilder sb = new StringBuilder();
+		int ind = 1;
 		for(Field field : fields)
 		{
-			
-			sb.append(ad.getFieldValue(field) + DELIM);
+			sb.append(ad.getFieldValue(field));
+			if(ind < fields.length)
+				sb.append(DELIM);
+			ind++;
 		}
 		
 		return sb.toString();

@@ -11,7 +11,7 @@ import data.AdInstance;
 public class AdsFileReader {
 
 	private BufferedReader bufferedReader;
-	private int adsRead = 0;
+	private long adsRead = 0;
 	
 	public AdsFileReader()
 	{
@@ -20,6 +20,11 @@ public class AdsFileReader {
 					new FileReader(
 							"D:\\Kaggle\\AvazuCtrPrediction\\train\\demo.csv"));
 			bufferedReader.readLine();
+			adsRead++;
+			if(adsRead % 10000 == 0)
+			{
+				System.out.println("Ads read " + adsRead);
+			}
 		} catch (FileNotFoundException e) {
 
 			e.printStackTrace();
