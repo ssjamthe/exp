@@ -20,13 +20,13 @@ import data.Field;
 public class LRFirstApproach {
 
 	public static void main(String args[]) {
-		String trainingFile = "D:\\Kaggle\\AvazuCtrPrediction\\train\\demo.csv";
+		String trainingFile = "D:\\Kaggle\\AvazuCtrPrediction\\train\\train.csv";
 		String trainingIndicesFile = "D:\\Kaggle\\AvazuCtrPrediction\\processed\\firstApproach\\trainFile.txt";
 		String indicesFile = "D:\\Kaggle\\AvazuCtrPrediction\\processed\\firstApproach\\indices.txt";
 		String modelFile = "D:\\Kaggle\\AvazuCtrPrediction\\processed\\firstApproach\\model.ser";
 		String processedTestFile = "D:\\Kaggle\\AvazuCtrPrediction\\processed\\firstApproach\\test.txt";
-		String inputTestFile = "D:\\Kaggle\\AvazuCtrPrediction\\test\\head_test_converted.csv";
-		String predictedOutputFile = "D:\\Kaggle\\AvazuCtrPrediction\\test\\predicted.csv"; 
+		String inputTestFile = "D:\\Kaggle\\AvazuCtrPrediction\\test\\test_converted.csv";
+		String predictedOutputFile = "D:\\Kaggle\\AvazuCtrPrediction\\processed\\firstApproach\\predicted.csv"; 
 
 		List<Feature> features = new ArrayList<Feature>();
 		features.add(new Feature(new Field[] { Field.BANNER_POS, Field.C15,
@@ -121,7 +121,7 @@ public class LRFirstApproach {
 
 		IndexedFeatureTrainer trainer = new IndexedFeatureTrainer();
 		OnlineLogisticRegression model = trainer
-				.trainByOnlineLogisticRegression(trainingIndicesFile,
+				.trainByOnlineLogisticRegression(features,trainingIndicesFile,
 						maxIndex + 1);
 		try {
 			model.write(new ObjectOutputStream(new FileOutputStream(modelFile)));

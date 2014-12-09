@@ -3,6 +3,7 @@ package util;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 import org.apache.mahout.classifier.AbstractVectorClassifier;
 
@@ -15,6 +16,8 @@ public class IndexedFeatureClassifier {
 				inputFile, cardinality);
 
 		IndexedFeatureFileReader.VectorData vectorData;
+		DecimalFormat decimalFormat = new DecimalFormat();
+		decimalFormat.setMaximumFractionDigits(3);
 
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(
@@ -25,7 +28,7 @@ public class IndexedFeatureClassifier {
 				double predictedVal = classifier.classifyScalar(vectorData
 						.getVector());
 				
-				writer.write(vectorData.getAdId() + DELIM + predictedVal + "\n");
+				writer.write(vectorData.getAdId() + DELIM + decimalFormat.format(predictedVal) + "\n");
 
 			}
 			
