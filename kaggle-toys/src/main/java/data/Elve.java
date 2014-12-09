@@ -19,6 +19,7 @@ public class Elve {
 	private final String id;
 	private double rating = 1.0;
 	private int nextAvailableTime=540;
+	private int lastJobFinishTime = 540;
 	
 	
 	
@@ -125,7 +126,10 @@ public class Elve {
 	}
 
 	
-	
+	public int getLastJobFinishTime() {
+		return lastJobFinishTime;
+	}
+
 	public WorkInfo work(Toy toy)
 	{
 		int startTime = toy.getArrivalTime() > this.nextAvailableTime?toy.getArrivalTime():this.nextAvailableTime;
@@ -153,6 +157,7 @@ public class Elve {
 	private void updateAvailableTime(int startTime,int sanctionedMinutes,int unsanctionedMinutes)
 	{
 		int workEndTime = startTime + sanctionedMinutes + unsanctionedMinutes;
+		this.lastJobFinishTime = workEndTime;
 		this.nextAvailableTime = addToSanctionedTime(TimeHelper.getNextStartTime(workEndTime),unsanctionedMinutes);
 	}
 	
