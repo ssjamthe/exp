@@ -23,6 +23,7 @@ public class IndexedFeatureClassifier {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(
 					outputFile));
 
+			writer.write("id" + DELIM + "click\n");
 			while ((vectorData = fileReader.next()) != null) {
 
 				double predictedVal = classifier.classifyScalar(vectorData
