@@ -7,7 +7,7 @@ import util.TimeHelper;
 /*
  * TODO : Of course create separate time util class...
  */
-public class Elve {
+public class Elve implements Cloneable{
 	
 	
 	private static final int MIN_IN_DAY = 24*60;
@@ -103,6 +103,16 @@ public class Elve {
 	public Elve(String id)
 	{
 		this.id = id;
+	}
+	
+	public Elve clone()
+	{
+		Elve elve = new Elve(this.id);
+		elve.lastJobFinishTime = this.lastJobFinishTime;
+		elve.nextAvailableTime = this.nextAvailableTime;
+		elve.rating = this.rating;
+		
+		return elve;
 	}
 
 	public double getRating() {
