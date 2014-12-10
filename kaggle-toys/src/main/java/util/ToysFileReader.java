@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import data.Toy;
 
@@ -52,6 +56,21 @@ public class ToysFileReader {
 			throw new RuntimeException(e);
 		}
 
+	}
+	
+	public Map<String,Toy> readAllToys()
+	{
+		Map<String,Toy> toys = new HashMap<String,Toy>(10000000);
+		boolean result = true;
+		while(result)
+		{
+			Toy toy = new Toy();
+			result = readNextToy(toy);
+			toys.put(toy.getToyId(), toy);
+		}
+		
+		return toys;
+		
 	}
 
 	private static void populateToy(String toyStr, Toy toy) {

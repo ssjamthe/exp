@@ -11,19 +11,19 @@ public class ObjectiveValueHelper {
 	public static class ObjectiveValueData {
 		public double val;
 		public int endTime;
-		public String maxEndTimeElveId;
+		public int maxEndTimeElveId;
 	}
 
 	
 
 	public ObjectiveValueData calculateObjectiveValue(Elve[] elves,
-			Map<String, List<Toy>> assignments) {
+			List<Toy>[] assignments) {
 		int maxTime = 0;
-		String maxEndTimeElveId = null;
+		int maxEndTimeElveId = -1;
 		int elvesUsed = 0;
 
 		for (Elve elve : elves) {
-			List<Toy> toys = assignments.get(elve.getId());
+			List<Toy> toys = assignments[elve.getId()];
 			if (toys.size() == 0)
 				continue;
 

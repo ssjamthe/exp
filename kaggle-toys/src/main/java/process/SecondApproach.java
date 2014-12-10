@@ -20,13 +20,13 @@ public class SecondApproach {
 		List<Elve> elveList = new ArrayList<Elve>(900);
 		for(int i=1;i<=900;i++)
 		{
-			elveList.add(new Elve(Integer.toString(i)));
+			elveList.add(new Elve(i));
 		}
 		
 		
 		ToysFileReader toysReader = new ToysFileReader();
 		
-		OutputFileHelper outputHelper = new OutputFileHelper();
+		OutputFileHelper outputHelper = new OutputFileHelper("D:/Kaggle/HelpingSantasHelpers/output/firstSecondApproach/");
 		
 		
 		Toy toy = new Toy();

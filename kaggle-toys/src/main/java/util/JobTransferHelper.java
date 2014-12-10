@@ -9,14 +9,14 @@ public class JobTransferHelper {
 
 	public static class JobTransferResult {
 		public int endTime;
-		public String enTimeElveId;
+		public int enTimeElveId;
 	}
 
-	public JobTransferResult getJobTransferResult(
+	public JobTransferResult getJobTransferResult(int fromElveId,int toElveId,
 			List<Toy> fromElveAssignments, List<Toy> toElveAssignments, Toy toy) {
 
-		Elve fromElve = new Elve("dummy1");
-		Elve toElve = new Elve("dummy2");
+		Elve fromElve = new Elve(fromElveId);
+		Elve toElve = new Elve(toElveId);
 
 		if (toElveAssignments.size() == 0) {
 			toElve.work(toy);

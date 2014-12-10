@@ -34,7 +34,7 @@ public class FirstApproach {
 		
 		ToysFileReader toysReader = new ToysFileReader();
 		
-		OutputFileHelper outputHelper = new OutputFileHelper();
+		OutputFileHelper outputHelper = new OutputFileHelper("D:/Kaggle/HelpingSantasHelpers/output/firstSecondApproach/");
 		
 		
 		Toy toy = new Toy();

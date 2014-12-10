@@ -16,7 +16,7 @@ public class Elve implements Cloneable{
 	private static final int SACNTIONED_IN_DAY = 10*60;
 	private static final int UNSANCTIONED_IN_DAY = 14*10;
 	
-	private final String id;
+	private final int id;
 	private double rating = 1.0;
 	private int nextAvailableTime=540;
 	private int lastJobFinishTime = 540;
@@ -100,7 +100,7 @@ public class Elve implements Cloneable{
 	}
 	
 	
-	public Elve(String id)
+	public Elve(int id)
 	{
 		this.id = id;
 	}
@@ -131,7 +131,7 @@ public class Elve implements Cloneable{
 		this.nextAvailableTime = nextAvailableTime;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 

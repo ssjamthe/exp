@@ -11,14 +11,14 @@ import org.apache.pig.ExecType;
 import org.apache.pig.PigServer;
 
 public class OutputFileHelper {
-	
-	private static final String outputFolder = "D:/Kaggle/HelpingSantasHelpers/output/";
 	private static final String pigScriptPath = "E:\\workspace\\java\\eclipse\\kaggle-toys\\src\\main\\resources\\pig\\finalOutputFile.pig";
+	private final String outputFolder;
 	private BufferedWriter bufferedWriter;
 	private String fileName;
 	
 	
-	public OutputFileHelper() {
+	public OutputFileHelper(String outputFolder) {
+		this.outputFolder = outputFolder;
 		Calendar calendar = Calendar.getInstance();
 		String name = calendar.get(Calendar.YEAR) + "_" + (calendar.get(Calendar.MONTH) + 1) + "_" + calendar.get(Calendar.DAY_OF_MONTH) + "_" +calendar.get(Calendar.HOUR_OF_DAY) + "_" +calendar.get(Calendar.MINUTE);
 		fileName = outputFolder + name;
@@ -32,7 +32,7 @@ public class OutputFileHelper {
 		}
 	}
 	
-	public void write(String toyId,String elfId,int startTime,int duration)
+	public void write(String toyId,int elfId,int startTime,int duration)
 	{
 		try {
 			bufferedWriter.write(toyId + "," + elfId + "," + TimeHelper.convertToString(startTime) + "," + duration + "," + (startTime+duration) + "\n");
