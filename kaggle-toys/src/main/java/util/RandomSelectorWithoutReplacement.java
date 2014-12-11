@@ -18,6 +18,11 @@ public class RandomSelectorWithoutReplacement<K> {
 	
 	public void addElement(K element,double weight)
 	{
+		
+		if(weight <= 0)
+		{
+			throw new IllegalStateException("weight cannot be <=0");
+		}
 		Entry<K> entry = new Entry<K>();
 		entry.element = element;
 		entry.start = lastEnd;
@@ -30,6 +35,8 @@ public class RandomSelectorWithoutReplacement<K> {
 	
 	public K selectElement()
 	{
+		if(list.isEmpty())
+			throw new IllegalStateException("Empty selector..");
 		double rand = Math.random() * lastEnd;
 		
 		Iterator<Entry<K>> iter = list.iterator();

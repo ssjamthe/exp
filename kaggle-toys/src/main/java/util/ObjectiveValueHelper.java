@@ -25,8 +25,9 @@ public class ObjectiveValueHelper {
 		int maxEndTimeElveId = -1;
 		int elvesUsed = 0;
 
-		for (Elve elve : elves) {
-			List<Toy> toys = assignments[elve.getId()];
+		for (int i=1;i<901;i++) {
+			Elve elve = elves[i];
+			List<Toy> toys = assignments[i];
 			if (toys.size() == 0)
 				continue;
 

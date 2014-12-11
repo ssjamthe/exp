@@ -50,8 +50,8 @@ public class ThirdApproach {
 		
 		
 		
-		double temp = 1000;
-		double coolingFactor = 0.001;
+		double temp = 100;
+		double coolingFactor = 0.9999935;
 
 		RandomSelectorWithoutReplacement<Integer> fromElveSelector = new RandomSelectorWithoutReplacement<Integer>();
 		for (int i = 1; i < 901; i++) {
@@ -84,7 +84,7 @@ public class ThirdApproach {
 
 		Random random = new Random();
 
-		while (temp > 1) {
+		while (temp > 0.1) {
 			iter++;
 			if(iter % 1000 == 0)
 			{
@@ -222,21 +222,25 @@ public class ThirdApproach {
 		
 		stepsWriter.close();
 		
+
+		BufferedWriter summaryWriter = new BufferedWriter(new FileWriter(outputFolder + "/summary.txt"));
+		summaryWriter.write("\niter : " + iter);
+		summaryWriter.write("\ntotalRandomIterations : " + totalRandomIterations);
+		summaryWriter.write("\ntotalRandomAccepted : " + totalRandomAccepted);
+		summaryWriter.write("\ntotalIterationsAccepted : " + totalIterationsAccepted);
+		summaryWriter.write("\ntotalWorseIterationsAccepted : " + totalWorseIterationsAccepted);
+		summaryWriter.write("\nnumOfSameTransferElves : " + numOfSameTransferElves);
+		summaryWriter.write("\nzeroToysFromElveId : " + zeroToysFromElveId);
+		summaryWriter.write("\ntotalBetterIterations : " + totalBetterIterations);
+		summaryWriter.write("\ntotalRandomBetterIterations : " + totalRandomBetterIterations);
+		summaryWriter.write("\nelvesUsed : " + elvesUsed);
+		
+		summaryWriter.close();
+		
 		OutputFileHelper outputFileHelper = new OutputFileHelper(outputFolder);
 		outputFileHelper.writeAllAssignments(assignments);
 		outputFileHelper.done();
 		
-		
-		System.out.println("iter : " + iter);
-		System.out.println("totalRandomIterations : " + totalRandomIterations);
-		System.out.println("totalRandomAccepted : " + totalRandomAccepted);
-		System.out.println("totalIterationsAccepted : " + totalIterationsAccepted);
-		System.out.println("totalWorseIterationsAccepted : " + totalWorseIterationsAccepted);
-		System.out.println("numOfSameTransferElves : " + numOfSameTransferElves);
-		System.out.println("zeroToysFromElveId : " + zeroToysFromElveId);
-		System.out.println("totalBetterIterations : " + totalBetterIterations);
-		System.out.println("totalRandomBetterIterations : " + totalRandomBetterIterations);
-		System.out.println("elvesUsed : " + elvesUsed);
 
 	}
 	
@@ -283,7 +287,7 @@ public class ThirdApproach {
 		if (prevObj > newObj)
 			return 1.0;
 
-		return Math.exp((newObj - prevObj) / temp);
+		return Math.exp((prevObj - newObj) / temp);
 	}
 
 }
