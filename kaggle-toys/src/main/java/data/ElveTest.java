@@ -13,7 +13,7 @@ public class ElveTest {
 	@Test
 	public void testWork() {
 
-		Elve elve = new Elve("1");
+		Elve elve = new Elve(1);
 		//elve.setNextAvailableTime(TimeHelper.parseTime("2014 1 1 0 44"));
 
 		Toy toy = new Toy();
@@ -155,7 +155,7 @@ public class ElveTest {
 	@Test
 	public void testCalculateFinishTime()
 	{
-		Elve elve = new Elve("1");
+		Elve elve = new Elve(1);
 		//elve.setNextAvailableTime(TimeHelper.parseTime("2014 1 1 0 44"));
 
 		Toy toy = new Toy();

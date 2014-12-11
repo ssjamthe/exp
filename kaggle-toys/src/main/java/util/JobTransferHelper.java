@@ -8,8 +8,10 @@ import data.Toy;
 public class JobTransferHelper {
 
 	public static class JobTransferResult {
+		public Elve fromElve;
+		public Elve toElve;
 		public int endTime;
-		public int enTimeElveId;
+		public int endTimeElveId;
 	}
 
 	public static JobTransferResult getJobTransferResult(int fromElveId,int toElveId,
@@ -45,12 +47,14 @@ public class JobTransferHelper {
 		}
 
 		JobTransferResult result = new JobTransferResult();
+		result.fromElve = fromElve;
+		result.toElve = toElve;
 		if (fromElve.getLastJobFinishTime() > toElve.getLastJobFinishTime()) {
 			result.endTime = fromElve.getLastJobFinishTime();
-			result.enTimeElveId = fromElve.getId();
+			result.endTimeElveId = fromElveId;
 		} else {
 			result.endTime = toElve.getLastJobFinishTime();
-			result.enTimeElveId = toElve.getId();
+			result.endTimeElveId = toElveId;
 		}
 
 		return result;

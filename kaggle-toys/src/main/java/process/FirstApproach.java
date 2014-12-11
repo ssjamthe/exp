@@ -18,7 +18,7 @@ public class FirstApproach {
 			double secondVal = o2.getRating()/o2.getNextAvailableTime();
 			
 			
-			return firstVal > secondVal ? -1:(firstVal<secondVal)?1:(Integer.parseInt(o1.getId()) < Integer.parseInt(o2.getId())?-1:1);
+			return firstVal > secondVal ? -1:(firstVal<secondVal)?1:(o1.getId() < o2.getId())?-1:1;
 		}
 		
 	}
@@ -29,7 +29,7 @@ public class FirstApproach {
 		PriorityQueue<Elve> queue = new PriorityQueue<Elve>(900,new ElveComparator());
 		for(int i=1;i<=900;i++)
 		{
-			queue.offer(new Elve(Integer.toString(i)));
+			queue.offer(new Elve(i));
 		}
 		
 		ToysFileReader toysReader = new ToysFileReader();

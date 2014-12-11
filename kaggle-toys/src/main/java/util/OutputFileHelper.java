@@ -5,20 +5,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.pig.ExecType;
 import org.apache.pig.PigServer;
 
+import data.Elve;
+import data.Toy;
+
 public class OutputFileHelper {
 	private static final String pigScriptPath = "E:\\workspace\\java\\eclipse\\kaggle-toys\\src\\main\\resources\\pig\\finalOutputFile.pig";
-	private final String outputFolder;
 	private BufferedWriter bufferedWriter;
 	private String fileName;
 	
 	
 	public OutputFileHelper(String outputFolder) {
-		this.outputFolder = outputFolder;
 		Calendar calendar = Calendar.getInstance();
 		String name = calendar.get(Calendar.YEAR) + "_" + (calendar.get(Calendar.MONTH) + 1) + "_" + calendar.get(Calendar.DAY_OF_MONTH) + "_" +calendar.get(Calendar.HOUR_OF_DAY) + "_" +calendar.get(Calendar.MINUTE);
 		fileName = outputFolder + name;
@@ -42,6 +44,21 @@ public class OutputFileHelper {
 			e.printStackTrace();
 			
 			throw new RuntimeException(e);
+		}
+	}
+	
+	public void writeAllAssignments(List<Toy>[] assignments)
+	{
+		for(int i=1;i<901;i++)
+		{
+			Elve elve = new Elve(i);
+			List<Toy> toyAssignments = assignments[i];
+			
+			for(Toy toy : toyAssignments)
+			{
+				Elve.WorkInfo workInfo = elve.work(toy);
+				write(toy.getToyId(),i,workInfo.getStartTime(),workInfo.getDuration());
+			}
 		}
 	}
 	

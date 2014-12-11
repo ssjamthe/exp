@@ -31,4 +31,35 @@ public class Toy {
 		return timeToBuild;
 	}
 
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((toyId == null) ? 0 : toyId.hashCode());
+		return result;
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Toy other = (Toy) obj;
+		if (toyId == null) {
+			if (other.toyId != null)
+				return false;
+		} else if (!toyId.equals(other.toyId))
+			return false;
+		return true;
+	}
+
+	
+	
 }

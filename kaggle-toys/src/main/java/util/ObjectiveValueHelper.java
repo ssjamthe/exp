@@ -7,11 +7,14 @@ import data.Elve;
 import data.Toy;
 
 public class ObjectiveValueHelper {
+	
+	private static final double MULTPLIER = Math.pow(10, -9);
 
 	public static class ObjectiveValueData {
 		public double val;
 		public int endTime;
 		public int maxEndTimeElveId;
+		public int elvesUsed;
 	}
 
 	
@@ -44,14 +47,18 @@ public class ObjectiveValueHelper {
 
 		ObjectiveValueData ovd = new ObjectiveValueData();
 		ovd.endTime = maxTime;
-		ovd.val = maxTime * Math.log(1 + elvesUsed);
+		ovd.val = calculateObjectiveValue(maxTime,elvesUsed);
 		ovd.maxEndTimeElveId = maxEndTimeElveId;
+		ovd.elvesUsed = elvesUsed;
 
 		return ovd;
 
 	}
 	
-	
+	public static double calculateObjectiveValue(int endTime,int elvesUsed)
+	{
+		return endTime * Math.log(1 + elvesUsed)*MULTPLIER;
+	}
 
 	
 }
