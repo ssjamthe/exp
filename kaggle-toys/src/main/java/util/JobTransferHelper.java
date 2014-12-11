@@ -12,7 +12,7 @@ public class JobTransferHelper {
 		public int enTimeElveId;
 	}
 
-	public JobTransferResult getJobTransferResult(int fromElveId,int toElveId,
+	public static JobTransferResult getJobTransferResult(int fromElveId,int toElveId,
 			List<Toy> fromElveAssignments, List<Toy> toElveAssignments, Toy toy) {
 
 		Elve fromElve = new Elve(fromElveId);

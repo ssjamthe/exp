@@ -16,7 +16,7 @@ public class ObjectiveValueHelper {
 
 	
 
-	public ObjectiveValueData calculateObjectiveValue(Elve[] elves,
+	public static ObjectiveValueData calculateObjectiveValue(Elve[] elves,
 			List<Toy>[] assignments) {
 		int maxTime = 0;
 		int maxEndTimeElveId = -1;
@@ -50,6 +50,8 @@ public class ObjectiveValueHelper {
 		return ovd;
 
 	}
+	
+	
 
 	
 }
