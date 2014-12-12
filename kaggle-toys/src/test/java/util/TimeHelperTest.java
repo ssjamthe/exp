@@ -9,7 +9,9 @@ public class TimeHelperTest {
 	@Test
 	public void testParseTime() {
 		
-		int time = TimeHelper.parseTime("2014 3 22 6 40");
+		System.out.println("Max int : " + Integer.MAX_VALUE);
+		
+		int time = TimeHelper.parseTime("2538 4 7 17 49");
 		System.out.println(time);
 		
 		time = TimeHelper.parseTime("2014 1 1 1 5");
