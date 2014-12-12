@@ -50,7 +50,8 @@ public class ThirdApproach {
 		
 		
 		
-		double temp = 100;
+		double temp = 20;
+		double minTemp = 1;
 		double coolingFactor = 0.9999935;
 
 		RandomSelectorWithoutReplacement<Integer> fromElveSelector = new RandomSelectorWithoutReplacement<Integer>();
@@ -90,7 +91,7 @@ public class ThirdApproach {
 
 		Random random = new Random();
 
-		while (temp > 0.1) {
+		while (temp > minTemp) {
 			iter++;
 			if(iter % 10000 == 0)
 			{
@@ -263,8 +264,8 @@ public class ThirdApproach {
 		summaryWriter.write("\ntotalBetterIterations : " + totalBetterIterations);
 		summaryWriter.write("\ntotalRandomBetterIterations : " + totalRandomBetterIterations);
 		summaryWriter.write("\nelvesUsed : " + elvesUsed);
-		summaryWriter.write("\totalSameObjValInterations : " + totalSameObjValInterations);
-		summaryWriter.write("\totalSameObjValInterationsAccepted : " + totalSameObjValInterationsAccepted);
+		summaryWriter.write("\ntotalSameObjValInterations : " + totalSameObjValInterations);
+		summaryWriter.write("\ntotalSameObjValInterationsAccepted : " + totalSameObjValInterationsAccepted);
 		summaryWriter.write("\ntotalBestIterations : " + totalBestIterations);
 		summaryWriter.write("\nbestAssignmentsElvesUsed : " + bestAssignmentsElvesUsed);
 		summaryWriter.write("\nbestAssignmentsObjVal : " + bestAssignmentsObjVal);
@@ -283,7 +284,9 @@ public class ThirdApproach {
 		List<Toy>[] copy = new ArrayList[assignments.length];
 		for(int i=1;i<901;i++)
 		{
-			List<Toy> list = assignments[i];
+			
+			List<Toy> list = new ArrayList<Toy>();
+			list.addAll(assignments[i]);
 			List<Toy> newList = new ArrayList<Toy>(list.size());
 			newList.addAll(list);
 			
