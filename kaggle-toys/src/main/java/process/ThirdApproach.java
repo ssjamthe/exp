@@ -11,7 +11,7 @@ import java.util.Random;
 
 import data.Elve;
 import data.Toy;
-
+import util.AssignmentsDistributionWriter;
 import util.JobTransferHelper;
 import util.ObjectiveValueHelper;
 import util.OutputFileHelper;
@@ -251,6 +251,8 @@ public class ThirdApproach {
 		
 		stepsWriter.close();
 		
+		AssignmentsDistributionWriter.writeAssignments(outputFolder + "assignmentsDistribution.txt", bestAssignments);
+		
 
 		BufferedWriter summaryWriter = new BufferedWriter(new FileWriter(outputFolder + "/summary.txt"));
 		summaryWriter.write("\niter : " + iter);
@@ -284,9 +286,7 @@ public class ThirdApproach {
 		List<Toy>[] copy = new ArrayList[assignments.length];
 		for(int i=1;i<901;i++)
 		{
-			
-			List<Toy> list = new ArrayList<Toy>();
-			list.addAll(assignments[i]);
+			List<Toy> list = assignments[i];
 			List<Toy> newList = new ArrayList<Toy>(list.size());
 			newList.addAll(list);
 			

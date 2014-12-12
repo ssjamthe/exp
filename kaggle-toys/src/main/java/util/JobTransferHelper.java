@@ -25,21 +25,18 @@ public class JobTransferHelper {
 		} else {
 			boolean assigned = false;
 			for (Toy currToy : toElveAssignments) {
-				if (currToy.getArrivalTime() > toy.getArrivalTime()) {
-					toElve.work(toy);
-					assigned = true;
-				} else {
-					toElve.work(currToy);
+				if(currToy.getArrivalTime() >  toy.getArrivalTime() && !assigned)
+				{
+						toElve.work(toy);
+						assigned = true;
 				}
-			}
-
-			if (!assigned) {
-				toElve.work(toy);
+				
+				toElve.work(currToy);
 			}
 		}
 
 		if (fromElveAssignments.size() > 1) {
-			for (Toy currToy : toElveAssignments) {
+			for (Toy currToy : fromElveAssignments) {
 				if (!toy.getToyId().equals(currToy.getToyId())) {
 					fromElve.work(currToy);
 				}

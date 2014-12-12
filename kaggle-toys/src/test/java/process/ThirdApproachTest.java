@@ -2,6 +2,9 @@ package process;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 public class ThirdApproachTest {
@@ -9,11 +12,32 @@ public class ThirdApproachTest {
 	@Test
 	public void testCalculateAcceptanceProb() {
 		
-		/*double val = 20;
-		int iter = 0;
-		double c = 0.9999935;
+		List<String> list = new ArrayList<String>();
+		list.add("1");
+		list.add("2");
+		list.add("3");
+		list.add("4");
 		
-		while(val > 1)
+		list.remove("2");
+		
+		System.out.println(list);
+		
+		System.out.println(list.get(1));
+		
+		list.add(1, "20");
+
+		System.out.println(list);
+		
+		System.out.println(list.get(2));
+		System.out.println(list.get(3));
+		
+		/*double val = 100000;
+		double minVal = 2300;
+		int iter = 0;
+		//double c = 0.9999935;
+		double c = 0.99999;
+		
+		while(val > minVal)
 		{
 			iter++;
 			if(iter %10000 == 0)
@@ -22,7 +46,7 @@ public class ThirdApproachTest {
 			val = val *c;
 		}
 		
-		System.out.println(iter);*/
+		System.out.println("iters : " + iter);*/
 				
 		
 		//System.out.println(ThirdApproach.calculateAcceptanceProb(1000, 12000*6, 100000));
