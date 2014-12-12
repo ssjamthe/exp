@@ -24,6 +24,7 @@ public class ThirdApproach {
 	//private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_6_23_48_final\\part-r-00000";
 	private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_12_0_27_final\\part-r-00000";
 	private static final double TOTAL_RANDOM_TRANSFER_PROB = 0.3;
+	private static final double ACCEPT_SAME_OBJ_VAL_PROB = 0.5;
 
 
 	public static void main(String args[]) throws IOException {
@@ -61,7 +62,7 @@ public class ThirdApproach {
 
 		RandomSelectorWithoutReplacement<Integer> toElveSelector = new RandomSelectorWithoutReplacement<Integer>();
 		for (int i = 1; i < 901; i++) {
-			toElveSelector.addElement(i, 1.0 / elves[i].getLastJobFinishTime());
+			toElveSelector.addElement(i, 1.0/elves[i].getLastJobFinishTime());
 		}
 
 		int iter = 0;
@@ -69,10 +70,14 @@ public class ThirdApproach {
 		int totalRandomAccepted = 0;
 		int totalIterationsAccepted = 0;
 		int totalWorseIterationsAccepted = 0;
+		int totalWorseIterations = 0;
 		int numOfSameTransferElves = 0;
 		int zeroToysFromElveId = 0;
 		int totalBetterIterations = 0;
 		int totalRandomBetterIterations = 0;
+		int totalBestIterations = 0;
+		int totalSameObjValInterations = 0;
+		int totalSameObjValInterationsAccepted = 0;
 
 		int maxEndTime = objData.endTime;
 		int maxEndtimeEvleId = objData.maxEndTimeElveId;
@@ -81,14 +86,16 @@ public class ThirdApproach {
 		
 		
 		List<Toy>[] bestAssignments = copyAssignments(assignments);
+		int bestAssignmentsElvesUsed = objData.elvesUsed;
+		double bestAssignmentsObjVal = objData.val;
 
 		Random random = new Random();
 
 		while (temp > 0.1) {
 			iter++;
-			if(iter % 1000 == 0)
+			if(iter % 10000 == 0)
 			{
-				System.out.println("iter : " + iter);
+				System.out.println("iter : " + iter + ", temp : " + temp);
 			}
 			boolean totalRandomSelection = RandomSelector.selectRandomly(
 					TOTAL_RANDOM_TRANSFER_PROB, 1 - TOTAL_RANDOM_TRANSFER_PROB);
@@ -106,8 +113,11 @@ public class ThirdApproach {
 
 			} else {
 
+				
 				fromElveId = fromElveSelector.selectElement();
+				
 				toElveId = toElveSelector.selectElement();
+				
 			}
 
 			int numFromElveAssignments = assignments[fromElveId].size();
@@ -134,11 +144,11 @@ public class ThirdApproach {
 
 				newElvesUsed = elvesUsed;
 				if (numFromElveAssignments == 1) {
-					newElvesUsed++;
+					newElvesUsed--;
 				}
 
 				if (assignments[toElveId].size() == 0) {
-					newElvesUsed--;
+					newElvesUsed++;
 				}
 
 				double newObjVal = ObjectiveValueHelper
@@ -154,10 +164,24 @@ public class ThirdApproach {
 					}
 					
 				}
+				else if(newObjVal > objVal)
+				{
+					totalWorseIterations++;
+					accept = acceptChange(objVal, newObjVal, temp);
+					//stepsWriter.write("prevObjVal : " + objVal + ", newObjVal : " + newObjVal + " temp : " + temp + " accepted : " + accept + "\n");
+				}
 				else
 				{
-					accept = acceptChange(objVal, newObjVal, temp);
-					stepsWriter.write("prevObjVal : " + objVal + ", newObjVal : " + newObjVal + " temp : " + temp + " accepted : " + accept + "\n");
+					totalSameObjValInterations++;
+					if(Math.random() < ACCEPT_SAME_OBJ_VAL_PROB)
+					{
+						accept = true;
+						totalSameObjValInterationsAccepted++;
+					}
+					else
+					{
+						accept = false;
+					}
 				}
 				
 				Elve newFromElve;
@@ -175,20 +199,27 @@ public class ThirdApproach {
 						totalRandomAccepted++;
 					}
 					
-					if(newObjVal < objVal)
-					{
-						bestAssignments = copyAssignments(assignments);
-					}
+					
 					
 					if(newObjVal > objVal)
 					{
 						totalWorseIterationsAccepted++;
 					}
 					
+					if(newObjVal < bestAssignmentsObjVal)
+					{
+						bestAssignments = copyAssignments(assignments);
+						bestAssignmentsElvesUsed = newElvesUsed;
+						bestAssignmentsObjVal = newObjVal;
+						totalBestIterations++;
+					}
+					
 					maxEndTime = newMaxEndTime;
 					maxEndtimeEvleId = newMaxEntimeElveId;
 					elvesUsed = newElvesUsed;
 					objVal = newObjVal;
+					
+					
 
 				} else {
 
@@ -215,8 +246,6 @@ public class ThirdApproach {
 			
 			
 			temp = temp*coolingFactor;
-			
-			System.out.println();
 
 		}
 		
@@ -228,17 +257,23 @@ public class ThirdApproach {
 		summaryWriter.write("\ntotalRandomIterations : " + totalRandomIterations);
 		summaryWriter.write("\ntotalRandomAccepted : " + totalRandomAccepted);
 		summaryWriter.write("\ntotalIterationsAccepted : " + totalIterationsAccepted);
+		summaryWriter.write("\ntotalWorseIterations : " + totalWorseIterations);
 		summaryWriter.write("\ntotalWorseIterationsAccepted : " + totalWorseIterationsAccepted);
 		summaryWriter.write("\nnumOfSameTransferElves : " + numOfSameTransferElves);
 		summaryWriter.write("\nzeroToysFromElveId : " + zeroToysFromElveId);
 		summaryWriter.write("\ntotalBetterIterations : " + totalBetterIterations);
 		summaryWriter.write("\ntotalRandomBetterIterations : " + totalRandomBetterIterations);
 		summaryWriter.write("\nelvesUsed : " + elvesUsed);
+		summaryWriter.write("\totalSameObjValInterations : " + totalSameObjValInterations);
+		summaryWriter.write("\totalSameObjValInterationsAccepted : " + totalSameObjValInterationsAccepted);
+		summaryWriter.write("\ntotalBestIterations : " + totalBestIterations);
+		summaryWriter.write("\nbestAssignmentsElvesUsed : " + bestAssignmentsElvesUsed);
+		summaryWriter.write("\nbestAssignmentsObjVal : " + bestAssignmentsObjVal);
 		
 		summaryWriter.close();
 		
 		OutputFileHelper outputFileHelper = new OutputFileHelper(outputFolder);
-		outputFileHelper.writeAllAssignments(assignments);
+		outputFileHelper.writeAllAssignments(bestAssignments);
 		outputFileHelper.done();
 		
 

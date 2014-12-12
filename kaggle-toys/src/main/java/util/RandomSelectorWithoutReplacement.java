@@ -3,56 +3,53 @@ package util;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-
-
 public class RandomSelectorWithoutReplacement<K> {
-	
-	private LinkedList<Entry<K>> list = new LinkedList<Entry<K>>(); 
-	double lastEnd = 0;
-	
-	private static class Entry<K>{
+
+	private LinkedList<Entry<K>> list = new LinkedList<Entry<K>>();
+	double sumOfWeights = 0;
+
+	private static class Entry<K> {
 		private K element;
-		double start;
-		double end;
+		double weight;
 	}
-	
-	public void addElement(K element,double weight)
-	{
-		
-		if(weight <= 0)
-		{
+
+	public void addElement(K element, double weight) {
+
+		if (weight <= 0) {
 			throw new IllegalStateException("weight cannot be <=0");
 		}
 		Entry<K> entry = new Entry<K>();
 		entry.element = element;
-		entry.start = lastEnd;
-		entry.end = lastEnd + weight;
-		
-		lastEnd = entry.end;
-		
+		entry.weight = weight;
+
+		sumOfWeights = sumOfWeights + weight;
+
 		list.add(entry);
 	}
-	
-	public K selectElement()
-	{
-		if(list.isEmpty())
+
+	public K selectElement() {
+		if (list.isEmpty())
 			throw new IllegalStateException("Empty selector..");
-		double rand = Math.random() * lastEnd;
-		
+
+		double rand = Math.random() * sumOfWeights;
+
 		Iterator<Entry<K>> iter = list.iterator();
-		
-		while(iter.hasNext())
-		{
+		double lastEnd = 0;
+
+		while (iter.hasNext()) {
 			Entry<K> entry = iter.next();
-			if(rand>=entry.start && rand<entry.end)
-			{
+			double start = lastEnd;
+			double end = lastEnd + entry.weight;
+			if (rand >= start && rand < end) {
 				iter.remove();
+				sumOfWeights = sumOfWeights - entry.weight;
 				return entry.element;
 			}
+			lastEnd = end;
 		}
-		
-		throw new IllegalStateException("Should not reach here...");
-		
+
+		throw new IllegalStateException("Should not reach here... rand : " + rand + ", sum of weights : " + lastEnd);
+
 	}
 
 }

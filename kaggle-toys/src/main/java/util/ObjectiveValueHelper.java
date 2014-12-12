@@ -58,7 +58,7 @@ public class ObjectiveValueHelper {
 	
 	public static double calculateObjectiveValue(int endTime,int elvesUsed)
 	{
-		return endTime * Math.log(1 + elvesUsed)*MULTPLIER;
+		return endTime * Math.log(1 + elvesUsed);
 	}
 
 	
