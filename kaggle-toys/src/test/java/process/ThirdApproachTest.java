@@ -9,11 +9,11 @@ public class ThirdApproachTest {
 	@Test
 	public void testCalculateAcceptanceProb() {
 		
-		double val = 100;
+		/*double val = 20;
 		int iter = 0;
 		double c = 0.9999935;
 		
-		while(val > 0.1)
+		while(val > 1)
 		{
 			iter++;
 			if(iter %10000 == 0)
@@ -22,12 +22,13 @@ public class ThirdApproachTest {
 			val = val *c;
 		}
 		
-		System.out.println(iter);
+		System.out.println(iter);*/
 				
 		
-		System.out.println(ThirdApproach.calculateAcceptanceProb(1777, 1777, 0.2));
+		//System.out.println(ThirdApproach.calculateAcceptanceProb(1000, 12000*6, 100000));
+		System.out.println(ThirdApproach.calculateAcceptanceProb(1000, 1020*6, 2300));
 		
-		System.out.println(ThirdApproach.acceptChange(1777, 1900, 200));
+		//System.out.println(ThirdApproach.acceptChange(2000, 1000, 50));
 		
 	}
 
