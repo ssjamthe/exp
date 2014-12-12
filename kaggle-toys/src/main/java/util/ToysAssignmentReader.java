@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,8 @@ import data.Toy;
 public class ToysAssignmentReader {
 	
 	public static final String DELIM = ",";
+	
+	
 	
 	public static void main(String[] args)
 	{
@@ -55,6 +59,13 @@ public class ToysAssignmentReader {
 				{
 					System.out.println("Assignments read " + count);
 				}
+			}
+
+			
+			for(int i=1;i<901;i++)
+			{
+				List<Toy> toys = assignments[i];
+				Collections.sort(toys);
 			}
 			
 			return assignments;

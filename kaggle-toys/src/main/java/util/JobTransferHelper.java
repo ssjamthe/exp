@@ -25,7 +25,7 @@ public class JobTransferHelper {
 		} else {
 			boolean assigned = false;
 			for (Toy currToy : toElveAssignments) {
-				if(currToy.getArrivalTime() >  toy.getArrivalTime() && !assigned)
+				if((currToy.getArrivalTime() >  toy.getArrivalTime()) && !assigned)
 				{
 						toElve.work(toy);
 						assigned = true;

@@ -20,7 +20,7 @@ public class ToysFileReader {
 		try {
 			bufferedReader = new BufferedReader(
 					new FileReader(
-							"D:\\Kaggle\\HelpingSantasHelpers\\toys_rev2\\toys_rev2.csv"));
+							"D:\\Kaggle\\HelpingSantasHelpers\\toys_rev2\\demo.csv"));
 			bufferedReader.readLine();
 		} catch (FileNotFoundException e) {
 

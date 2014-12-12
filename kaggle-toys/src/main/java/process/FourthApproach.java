@@ -21,7 +21,9 @@ import util.ToysAssignmentReader;
 
 public class FourthApproach {
 	private static final String outputFolder = "D:/Kaggle/HelpingSantasHelpers/output/fourthApproach/";
-	private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_6_23_48_final\\part-r-00000";
+	// private static final String initialAssignmentsFile =
+	// "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_6_23_48_final\\part-r-00000";
+	private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_12_0_27_final\\part-r-00000";
 	private static final double TOTAL_RANDOM_TRANSFER_PROB = 0.3;
 	private static final double ACCEPT_SAME_OBJ_VAL_PROB = 0.5;
 
@@ -44,7 +46,14 @@ public class FourthApproach {
 		initialDataWriter.write("initial obj vaue " + objData.val + "\n");
 		initialDataWriter.write("initial elves used " + objData.elvesUsed
 				+ "\n");
+		initialDataWriter.write("initial max end time " + objData.endTime
+				+ "\n");
+		initialDataWriter.write("initial max end time elve id "
+				+ objData.maxEndTimeElveId + "\n");
 		initialDataWriter.close();
+
+		AssignmentsDistributionWriter.writeAssignments(outputFolder
+				+ "/initialAssignmentsDistribution.txt", assignments);
 
 		BufferedWriter stepsWriter = new BufferedWriter(new FileWriter(
 				outputFolder + "/StepsInfo.txt"));
@@ -80,6 +89,8 @@ public class FourthApproach {
 		List<Toy>[] bestAssignments = copyAssignments(assignments);
 		int bestAssignmentsElvesUsed = objData.elvesUsed;
 		double bestAssignmentsObjVal = objData.val;
+		int bestAssignmentsMaxTime = objData.endTime;
+		int bestAssignmentsMaxTimeElvdId = objData.maxEndTimeElveId;
 
 		Random random = new Random();
 
@@ -121,8 +132,8 @@ public class FourthApproach {
 				int newMaxEntimeElveId;
 				int newMaxEndTime;
 				int newElvesUsed;
-				if (maxEndtimeEvleId == transferResult.endTimeElveId
-						|| maxEndTime > transferResult.endTime) {
+				if (maxEndtimeEvleId == fromElveId  || maxEndtimeEvleId == toElveId
+						|| maxEndTime < transferResult.endTime) {
 					newMaxEntimeElveId = transferResult.endTimeElveId;
 					newMaxEndTime = transferResult.endTime;
 				} else {
@@ -173,6 +184,9 @@ public class FourthApproach {
 
 					assignments[fromElveId].remove(toyToTransfer);
 					insertToy(assignments[toElveId], toyToTransfer);
+					
+					//Collections.sort(assignments[fromElveId]);
+					//Collections.sort(assignments[toElveId]);
 
 					totalIterationsAccepted++;
 					if (totalRandomSelection) {
@@ -187,6 +201,8 @@ public class FourthApproach {
 						bestAssignments = copyAssignments(assignments);
 						bestAssignmentsElvesUsed = newElvesUsed;
 						bestAssignmentsObjVal = newObjVal;
+						bestAssignmentsMaxTime = newMaxEndTime;
+						bestAssignmentsMaxTimeElvdId = newMaxEntimeElveId;
 						totalBestIterations++;
 					}
 
@@ -210,7 +226,7 @@ public class FourthApproach {
 			}
 
 			if (!totalRandomSelection) {
-				toElveSelector.addElement(fromElveId,
+				toElveSelector.addElement(toElveId,
 						elves[toElveId].getLastJobFinishTime());
 			}
 
@@ -219,8 +235,9 @@ public class FourthApproach {
 		}
 
 		stepsWriter.close();
-		
-		AssignmentsDistributionWriter.writeAssignments(outputFolder + "assignmentsDistribution.txt", bestAssignments);
+
+		AssignmentsDistributionWriter.writeAssignments(outputFolder
+				+ "assignmentsDistribution.txt", bestAssignments);
 
 		BufferedWriter summaryWriter = new BufferedWriter(new FileWriter(
 				outputFolder + "/summary.txt"));
@@ -250,6 +267,24 @@ public class FourthApproach {
 				+ bestAssignmentsElvesUsed);
 		summaryWriter.write("\nbestAssignmentsObjVal : "
 				+ bestAssignmentsObjVal);
+		summaryWriter.write("\nbestAssignmentsMaxTime : "
+				+ bestAssignmentsMaxTime);
+		summaryWriter.write("\nbestAssignmentsMaxTimeElvdId : "
+				+ bestAssignmentsMaxTimeElvdId);
+		
+
+		Elve[] testElves = new Elve[901];
+		for (int i = 1; i < 901; i++)
+			testElves[i] = new Elve(i);
+
+		ObjectiveValueHelper.ObjectiveValueData testData = ObjectiveValueHelper
+				.calculateObjectiveValue(testElves, bestAssignments);
+		summaryWriter.write("\ntestObjVal : " + testData.val);
+		summaryWriter.write("\ntestEndTime : " + testData.endTime);
+		summaryWriter.write("\ntestElvesUsed : " + testData.elvesUsed);
+		summaryWriter.write("\ntestEndTimeElveId : "
+				+ testData.maxEndTimeElveId);
+		summaryWriter.write("\nexp : 1");
 
 		summaryWriter.close();
 
@@ -259,18 +294,16 @@ public class FourthApproach {
 
 	}
 
-	private static List<Toy>[] copyAssignments(List<Toy>[] assignments)
-	{
+	private static List<Toy>[] copyAssignments(List<Toy>[] assignments) {
 		List<Toy>[] copy = new ArrayList[assignments.length];
-		for(int i=1;i<901;i++)
-		{
+		for (int i = 1; i < 901; i++) {
 			List<Toy> list = assignments[i];
 			List<Toy> newList = new ArrayList<Toy>(list.size());
 			newList.addAll(list);
-			
+
 			copy[i] = newList;
 		}
-		
+
 		return copy;
 	}
 

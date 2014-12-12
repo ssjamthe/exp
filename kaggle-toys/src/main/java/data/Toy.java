@@ -2,7 +2,7 @@ package data;
 
 import util.TimeHelper;
 
-public class Toy {
+public class Toy implements Comparable<Toy>{
 	
 	
 	private String toyId;
@@ -58,6 +58,14 @@ public class Toy {
 		} else if (!toyId.equals(other.toyId))
 			return false;
 		return true;
+	}
+
+
+
+	@Override
+	public int compareTo(Toy o) {
+		
+		return this.arrivalTime - o.arrivalTime;
 	}
 
 	

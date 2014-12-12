@@ -11,6 +11,7 @@ public class ObjectiveValueHelperTest {
 		
 		
 		System.out.println(ObjectiveValueHelper.calculateObjectiveValue(275736589, 900));
+		System.out.println(ObjectiveValueHelper.calculateObjectiveValue(10633+501, 899));
 		
 	}
 

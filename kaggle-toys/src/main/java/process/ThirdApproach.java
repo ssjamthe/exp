@@ -44,6 +44,8 @@ public class ThirdApproach {
 		initialDataWriter.write("initial obj vaue " + objData.val + "\n");
 		initialDataWriter.write("initial elves used " + objData.elvesUsed + "\n");
 		initialDataWriter.close();
+		
+		AssignmentsDistributionWriter.writeAssignments(outputFolder + "/initialAssignmentsDistribution.txt", assignments);
 	
 		
 		BufferedWriter stepsWriter = new BufferedWriter(new FileWriter(outputFolder + "/StepsInfo.txt"));
@@ -134,7 +136,7 @@ public class ThirdApproach {
 				int newMaxEndTime;
 				int newElvesUsed;
 				if (maxEndtimeEvleId == transferResult.endTimeElveId
-						|| maxEndTime > transferResult.endTime) {
+						|| maxEndTime < transferResult.endTime) {
 					newMaxEntimeElveId = transferResult.endTimeElveId;
 					newMaxEndTime = transferResult.endTime;
 				} else {

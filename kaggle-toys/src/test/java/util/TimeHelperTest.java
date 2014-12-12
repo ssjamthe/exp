@@ -11,7 +11,7 @@ public class TimeHelperTest {
 		
 		System.out.println("Max int : " + Integer.MAX_VALUE);
 		
-		int time = TimeHelper.parseTime("2538 4 7 17 49");
+		int time = TimeHelper.parseTime("2014 1 8 9 13");
 		System.out.println(time);
 		
 		time = TimeHelper.parseTime("2014 1 1 1 5");
