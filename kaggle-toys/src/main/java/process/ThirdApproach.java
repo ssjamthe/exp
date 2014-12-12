@@ -21,8 +21,7 @@ import util.ToysAssignmentReader;
 
 public class ThirdApproach {
 	private static final String outputFolder = "D:/Kaggle/HelpingSantasHelpers/output/thirdApproach/";
-	//private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_6_23_48_final\\part-r-00000";
-	private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_12_0_27_final\\part-r-00000";
+	private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_6_23_48_final\\part-r-00000";
 	private static final double TOTAL_RANDOM_TRANSFER_PROB = 0.3;
 	private static final double ACCEPT_SAME_OBJ_VAL_PROB = 0.5;
 
