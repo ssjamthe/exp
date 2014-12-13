@@ -33,6 +33,11 @@ public class JobTransferHelper {
 				
 				toElve.work(currToy);
 			}
+			
+			if(!assigned)
+			{
+				toElve.work(toy);
+			}
 		}
 
 		

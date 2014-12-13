@@ -21,9 +21,8 @@ import util.ToysAssignmentReader;
 
 public class FourthApproach {
 	private static final String outputFolder = "D:/Kaggle/HelpingSantasHelpers/output/fourthApproach/";
-	// private static final String initialAssignmentsFile =
-	// "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_6_23_48_final\\part-r-00000";
-	private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_12_0_27_final\\part-r-00000";
+	private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_6_23_48_final\\part-r-00000";
+	//private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_12_0_27_final\\part-r-00000";
 	private static final double TOTAL_RANDOM_TRANSFER_PROB = 0.3;
 	private static final double ACCEPT_SAME_OBJ_VAL_PROB = 0.5;
 
@@ -191,13 +190,6 @@ public class FourthApproach {
 
 					if (newObjVal < bestAssignmentsObjVal) {
 						bestAssignments = copyAssignments(assignments);
-						ObjectiveValueHelper.ObjectiveValueData test = ObjectiveValueHelper
-								.calculateObjectiveValue(bestAssignments);
-						System.out.println("newTest : " + test.val + ", new : "
-								+ newObjVal + " , testEndTime : "
-								+ test.endTime + ", endTime : " + newMaxEndTime
-								+ ", testElveId : " + test.maxEndTimeElveId
-								+ " , elveId : " + newMaxEntimeElveId + " , testElvesUsed : " + test.elvesUsed + " ,elvesUsed : " + newElvesUsed);
 						bestAssignmentsElvesUsed = newElvesUsed;
 						bestAssignmentsObjVal = newObjVal;
 						bestAssignmentsMaxTime = newMaxEndTime;

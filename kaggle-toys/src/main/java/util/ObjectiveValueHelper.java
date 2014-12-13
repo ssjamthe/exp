@@ -1,5 +1,6 @@
 package util;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ public class ObjectiveValueHelper {
 		public int endTime;
 		public int maxEndTimeElveId;
 		public int elvesUsed;
+		public Elve[] elves;
 	}
 
 	
@@ -28,6 +30,7 @@ public class ObjectiveValueHelper {
 		for (int i=1;i<901;i++) {
 			Elve elve = elves[i];
 			List<Toy> toys = assignments[i];
+			
 			if (toys.size() == 0)
 				continue;
 
@@ -51,6 +54,7 @@ public class ObjectiveValueHelper {
 		ovd.val = calculateObjectiveValue(maxTime,elvesUsed);
 		ovd.maxEndTimeElveId = maxEndTimeElveId;
 		ovd.elvesUsed = elvesUsed;
+		ovd.elves = elves;
 
 		return ovd;
 
