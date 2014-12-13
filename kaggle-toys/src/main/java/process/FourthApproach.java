@@ -21,7 +21,9 @@ import util.ToysAssignmentReader;
 
 public class FourthApproach {
 	private static final String outputFolder = "D:/Kaggle/HelpingSantasHelpers/output/fourthApproach/";
-	private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_6_23_48_final\\part-r-00000";
+	//private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_6_23_48_final\\part-r-00000";
+	private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\fourthApproach\\bak\\1\\2014_12_13_21_42_final\\part-r-00000";
+	//demo
 	//private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_12_0_27_final\\part-r-00000";
 	private static final double TOTAL_RANDOM_TRANSFER_PROB = 0.3;
 	private static final double ACCEPT_SAME_OBJ_VAL_PROB = 0.5;
@@ -57,9 +59,9 @@ public class FourthApproach {
 		BufferedWriter stepsWriter = new BufferedWriter(new FileWriter(
 				outputFolder + "/StepsInfo.txt"));
 
-		double temp = 100000;
-		double minTemp = 2300;
-		double coolingFactor = 0.999993;
+		double temp = 200000;
+		double minTemp = 40000;
+		double coolingFactor = 0.999996;
 
 		RandomSelectorWithoutReplacement<Integer> toElveSelector = new RandomSelectorWithoutReplacement<Integer>();
 		for (int i = 1; i < 901; i++) {

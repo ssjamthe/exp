@@ -31,11 +31,11 @@ public class ThirdApproachTest {
 		System.out.println(list.get(2));
 		System.out.println(list.get(3));
 		
-		double val = 100000;
-		double minVal = 2300;
+		double val = 200000;
+		double minVal = 40000;
 		int iter = 0;
 		//double c = 0.9999935;
-		double c = 0.999993;
+		double c = 0.999996;
 		
 		while(val > minVal)
 		{
@@ -49,8 +49,8 @@ public class ThirdApproachTest {
 		System.out.println("iters : " + iter);
 				
 		
-		//System.out.println(ThirdApproach.calculateAcceptanceProb(1000, 12000*6, 100000));
-		System.out.println(ThirdApproach.calculateAcceptanceProb(1000, 1020*6, 2300));
+		System.out.println(ThirdApproach.calculateAcceptanceProb(1000, 30000*6, 200000));
+		System.out.println(ThirdApproach.calculateAcceptanceProb(1000, 20000*6, 40000));
 		
 		//System.out.println(ThirdApproach.acceptChange(2000, 1000, 50));
 		
