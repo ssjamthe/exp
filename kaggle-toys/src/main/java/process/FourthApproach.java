@@ -57,9 +57,9 @@ public class FourthApproach {
 		BufferedWriter stepsWriter = new BufferedWriter(new FileWriter(
 				outputFolder + "/StepsInfo.txt"));
 
-		double temp = 20;
-		double minTemp = 1;
-		double coolingFactor = 0.9999935;
+		double temp = 100000;
+		double minTemp = 2300;
+		double coolingFactor = 0.999993;
 
 		RandomSelectorWithoutReplacement<Integer> toElveSelector = new RandomSelectorWithoutReplacement<Integer>();
 		for (int i = 1; i < 901; i++) {
