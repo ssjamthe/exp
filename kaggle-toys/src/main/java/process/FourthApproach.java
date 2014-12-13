@@ -127,19 +127,11 @@ public class FourthApproach {
 				JobTransferHelper.JobTransferResult transferResult = JobTransferHelper
 						.getJobTransferResult(fromElveId, toElveId,
 								assignments[fromElveId], assignments[toElveId],
-								toyToTransfer);
+								toyToTransfer, elves);
 
-				int newMaxEntimeElveId;
-				int newMaxEndTime;
+				int newMaxEntimeElveId = transferResult.endTimeElveId;
+				int newMaxEndTime = transferResult.endTime;
 				int newElvesUsed;
-				if (maxEndtimeEvleId == fromElveId  || maxEndtimeEvleId == toElveId
-						|| maxEndTime < transferResult.endTime) {
-					newMaxEntimeElveId = transferResult.endTimeElveId;
-					newMaxEndTime = transferResult.endTime;
-				} else {
-					newMaxEntimeElveId = maxEndtimeEvleId;
-					newMaxEndTime = maxEndTime;
-				}
 
 				newElvesUsed = elvesUsed;
 				if (numFromElveAssignments == 1) {
@@ -184,9 +176,9 @@ public class FourthApproach {
 
 					assignments[fromElveId].remove(toyToTransfer);
 					insertToy(assignments[toElveId], toyToTransfer);
-					
-					//Collections.sort(assignments[fromElveId]);
-					//Collections.sort(assignments[toElveId]);
+
+					// Collections.sort(assignments[fromElveId]);
+					// Collections.sort(assignments[toElveId]);
 
 					totalIterationsAccepted++;
 					if (totalRandomSelection) {
@@ -199,6 +191,13 @@ public class FourthApproach {
 
 					if (newObjVal < bestAssignmentsObjVal) {
 						bestAssignments = copyAssignments(assignments);
+						ObjectiveValueHelper.ObjectiveValueData test = ObjectiveValueHelper
+								.calculateObjectiveValue(bestAssignments);
+						System.out.println("newTest : " + test.val + ", new : "
+								+ newObjVal + " , testEndTime : "
+								+ test.endTime + ", endTime : " + newMaxEndTime
+								+ ", testElveId : " + test.maxEndTimeElveId
+								+ " , elveId : " + newMaxEntimeElveId + " , testElvesUsed : " + test.elvesUsed + " ,elvesUsed : " + newElvesUsed);
 						bestAssignmentsElvesUsed = newElvesUsed;
 						bestAssignmentsObjVal = newObjVal;
 						bestAssignmentsMaxTime = newMaxEndTime;
@@ -271,7 +270,6 @@ public class FourthApproach {
 				+ bestAssignmentsMaxTime);
 		summaryWriter.write("\nbestAssignmentsMaxTimeElvdId : "
 				+ bestAssignmentsMaxTimeElvdId);
-		
 
 		Elve[] testElves = new Elve[901];
 		for (int i = 1; i < 901; i++)
@@ -284,7 +282,7 @@ public class FourthApproach {
 		summaryWriter.write("\ntestElvesUsed : " + testData.elvesUsed);
 		summaryWriter.write("\ntestEndTimeElveId : "
 				+ testData.maxEndTimeElveId);
-		summaryWriter.write("\nexp : 1");
+		summaryWriter.write("\nexp : 2");
 
 		summaryWriter.close();
 

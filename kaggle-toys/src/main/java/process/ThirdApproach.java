@@ -130,7 +130,7 @@ public class ThirdApproach {
 				JobTransferHelper.JobTransferResult transferResult = JobTransferHelper
 						.getJobTransferResult(fromElveId, toElveId,
 								assignments[fromElveId], assignments[toElveId],
-								toyToTransfer);
+								toyToTransfer,elves);
 
 				int newMaxEntimeElveId;
 				int newMaxEndTime;

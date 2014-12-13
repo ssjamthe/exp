@@ -15,7 +15,7 @@ public class JobTransferHelper {
 	}
 
 	public static JobTransferResult getJobTransferResult(int fromElveId,int toElveId,
-			List<Toy> fromElveAssignments, List<Toy> toElveAssignments, Toy toy) {
+			List<Toy> fromElveAssignments, List<Toy> toElveAssignments, Toy toy,Elve[] elves) {
 
 		Elve fromElve = new Elve(fromElveId);
 		Elve toElve = new Elve(toElveId);
@@ -35,24 +35,40 @@ public class JobTransferHelper {
 			}
 		}
 
-		if (fromElveAssignments.size() > 1) {
+		
 			for (Toy currToy : fromElveAssignments) {
 				if (!toy.getToyId().equals(currToy.getToyId())) {
 					fromElve.work(currToy);
 				}
+			}
+		
+		
+		int maxTime = 0;
+		int maxTimeElveId = -1;
+		
+		for(int i=1;i<901;i++)
+		{
+			Elve elve;
+			if(i == fromElveId)
+				elve = fromElve;
+			else if(i == toElveId)
+				elve = toElve;
+			else
+				elve = elves[i];
+			
+			if(maxTime < elve.getLastJobFinishTime())
+			{
+				maxTime = elve.getLastJobFinishTime();
+				maxTimeElveId = elve.getId();
 			}
 		}
 
 		JobTransferResult result = new JobTransferResult();
 		result.fromElve = fromElve;
 		result.toElve = toElve;
-		if (fromElve.getLastJobFinishTime() > toElve.getLastJobFinishTime()) {
-			result.endTime = fromElve.getLastJobFinishTime();
-			result.endTimeElveId = fromElveId;
-		} else {
-			result.endTime = toElve.getLastJobFinishTime();
-			result.endTimeElveId = toElveId;
-		}
+		result.endTime = maxTime;
+		result.endTimeElveId = maxTimeElveId;
+		
 
 		return result;
 

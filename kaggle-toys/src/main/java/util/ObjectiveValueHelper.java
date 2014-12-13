@@ -39,7 +39,7 @@ public class ObjectiveValueHelper {
 
 			int lastToyEndTime = elve.getLastJobFinishTime();
 
-			if (lastToyEndTime > maxTime) {
+			if (maxTime < lastToyEndTime) {
 				maxTime = lastToyEndTime;
 				maxEndTimeElveId = elve.getId();
 			}
@@ -54,6 +54,19 @@ public class ObjectiveValueHelper {
 
 		return ovd;
 
+	}
+	
+	public static ObjectiveValueData calculateObjectiveValue(List<Toy>[] assignments) {
+		
+		Elve[] elves = new Elve[901];
+		
+		for(int i=1;i<901;i++)
+		{
+			elves[i] = new Elve(i);
+		}
+		
+		return calculateObjectiveValue(elves,assignments);
+		
 	}
 	
 	public static double calculateObjectiveValue(int endTime,int elvesUsed)
