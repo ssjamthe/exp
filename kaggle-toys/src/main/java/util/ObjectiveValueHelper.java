@@ -20,7 +20,9 @@ public class ObjectiveValueHelper {
 	}
 
 	
-
+/**
+ * Modifies the elves
+ */
 	public static ObjectiveValueData calculateObjectiveValue(Elve[] elves,
 			List<Toy>[] assignments) {
 		int maxTime = 0;
@@ -72,6 +74,7 @@ public class ObjectiveValueHelper {
 		return calculateObjectiveValue(elves,assignments);
 		
 	}
+	
 	
 	public static double calculateObjectiveValue(int endTime,int elvesUsed)
 	{

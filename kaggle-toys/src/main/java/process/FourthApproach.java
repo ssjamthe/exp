@@ -19,6 +19,9 @@ import util.RandomSelector;
 import util.RandomSelectorWithoutReplacement;
 import util.ToysAssignmentReader;
 
+/**
+ * Use Simulated annealing helper
+ */
 public class FourthApproach {
 	private static final String outputFolder = "D:/Kaggle/HelpingSantasHelpers/output/fourthApproach/";
 	//private static final String initialAssignmentsFile = "D:\\Kaggle\\HelpingSantasHelpers\\output\\firstSecondApproach\\2014_12_6_23_48_final\\part-r-00000";

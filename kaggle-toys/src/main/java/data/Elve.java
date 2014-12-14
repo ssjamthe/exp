@@ -20,6 +20,7 @@ public class Elve implements Cloneable{
 	private double rating = 1.0;
 	private int nextAvailableTime=540;
 	private int lastJobFinishTime = 540;
+	private int numToysWorked;
 	
 	
 	
@@ -153,7 +154,14 @@ public class Elve implements Cloneable{
 		WorkInfo workInfo = new WorkInfo();
 		workInfo.startTime = startTime;
 		workInfo.duration = timeRequired;
+		
+		numToysWorked++;
 		return workInfo;
+	}
+	
+	public int getNumberOfToysWorked()
+	{
+		return numToysWorked;
 	}
 	
 	public int calculateFinishTime(Toy toy)
