@@ -1,12 +1,15 @@
 package util;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.gnu.glpk.GLPK;
 import org.gnu.glpk.GLPKConstants;
 import org.gnu.glpk.SWIGTYPE_p_double;
 import org.gnu.glpk.SWIGTYPE_p_int;
+import org.gnu.glpk.glp_iocp;
 import org.gnu.glpk.glp_prob;
 
 import data.Elve;
@@ -14,106 +17,180 @@ import data.Toy;
 
 public class LinearProgrammingHelper {
 
+	static {
+		System.setProperty("java.library.path", "D:\\glpk-4.55\\w32");
+
+		try {
+			final Field sysPathsField = ClassLoader.class
+					.getDeclaredField("sys_paths");
+			sysPathsField.setAccessible(true);
+			sysPathsField.set(null, null);
+		} catch (IllegalArgumentException e) {
+
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
 	/*
-	 * min e1+-e2-e3... + a11*t1+a12*t2+a13*t3+... 
-	 * Contstraints :
+	 * min e1+a11*t1+a12*t2+a13*t3+... Contstraints :
 	 * 
-	 * Elves Constraints
-	 * a11*t1+a12*t2+a13*t3... >= a21*t1+a22*t2+a23*t3...
+	 * Elves Constraints a11*t1+a12*t2+a13*t3... >= a21*t1+a22*t2+a23*t3...
 	 * a11*t1+a12*t2+a13*t3... >= a31*t1+a32*t2+a33*t3...
 	 * 
-	 * Toys Constraints
-	 * a11+a21+a31...  = 1
-	 * a12+a22+a32...  = 1
-	 * a13+a23+a33...  = 1
+	 * Toys Constraints a11+a21+a31... = 1 a12+a22+a32... = 1 a13+a23+a33... = 1
+	 * 
+	 * where aij = 1 if toy j is assigned to elve i ti = ideal finish time for
+	 * toy i
+	 * 
+	 * Above we have assumed that elve finishing last toy is 1st elve which is
+	 * not the case in code.
 	 */
 	public List<Toy>[] optimize(Elve[] elves, ArrayList<Toy> toys,
 			int startIndex, int endIndex) {
-
-		List<Toy>[] assignments;
-
-		glp_prob lp = GLPK.glp_create_prob();
-		GLPK.glp_set_prob_name(lp, "lp_" + startIndex + "_" + endIndex);
-
-		int maxTimeElveId = getHishestEndTimeElveIndex(elves);
-
+		List<Toy>[] assignments = null;
 		int noOfToys = endIndex - startIndex + 1;
 		int noOfElves = elves.length - 1;
 		int totalCols = (noOfElves) * (noOfToys + 1);
-
-		GLPK.glp_add_cols(lp, totalCols);
-
-		for (int i = 1; i <= totalCols; i++) {
-			GLPK.glp_set_col_kind(lp, i, GLPKConstants.GLP_BV);
-
-			if (i <= noOfElves) {
-				GLPK.glp_set_col_bnds(lp, i, GLPKConstants.GLP_FX, 1, 1);
-			}
-		}
-
 		int numOfIndicesElvesConstraint = noOfToys * 2 + 2;
 		SWIGTYPE_p_int constraintsIndices = GLPK
 				.new_intArray(numOfIndicesElvesConstraint);
 		SWIGTYPE_p_double constraintsVals = GLPK
 				.new_doubleArray(numOfIndicesElvesConstraint);
-		GLPK.intArray_setitem(constraintsIndices, 1, maxTimeElveId);
-		GLPK.doubleArray_setitem(constraintsVals, 1,
-				elves[maxTimeElveId].getLastJobFinishTime());
-		int startOfMaxTimeElveIdAssignments = noOfElves + maxTimeElveId
-				* noOfToys;
-		for (int i = 0; i < noOfToys; i++) {
-			GLPK.intArray_setitem(constraintsIndices, i + 3,
-					startOfMaxTimeElveIdAssignments + i);
-			GLPK.doubleArray_setitem(constraintsVals, i + 3, toys.get(i)
-					.getIdealEndTime());
-		}
+		glp_prob lp = GLPK.glp_create_prob();
+		glp_iocp parmIocp = new glp_iocp();
+		parmIocp.setPresolve(GLPKConstants.GLP_ON);
+		parmIocp.setTm_lim(3*60*60*1000);
+		
+		try {
 
-		int contraintCount = 0;
-		for (int elveId = 1; elveId <= noOfElves; elveId++) {
-			if (elveId != maxTimeElveId) {
+			
+			GLPK.glp_set_prob_name(lp, "lp_" + startIndex + "_" + endIndex);
+
+			int maxTimeElveId = getHishestEndTimeElveIndex(elves);
+
+			GLPK.glp_add_cols(lp, totalCols);
+
+			for (int i = 1; i <= totalCols; i++) {
+				GLPK.glp_set_col_kind(lp, i, GLPKConstants.GLP_BV);
+
+				if (i <= noOfElves) {
+					GLPK.glp_set_col_bnds(lp, i, GLPKConstants.GLP_FX, 1, 1);
+				}
+			}
+
+			GLPK.intArray_setitem(constraintsIndices, 1, maxTimeElveId);
+			GLPK.doubleArray_setitem(constraintsVals, 1,
+					elves[maxTimeElveId].getLastJobFinishTime());
+			int beforeStartOfMaxTimeElveIdAssignments = noOfElves
+					+ (maxTimeElveId - 1) * noOfToys;
+			for (int i = 1; i <= noOfToys; i++) {
+				GLPK.intArray_setitem(constraintsIndices, i + 2,
+						beforeStartOfMaxTimeElveIdAssignments + i);
+				GLPK.doubleArray_setitem(constraintsVals, i + 2, toys
+						.get(i - 1).getIdealEndTime());
+			}
+
+			int contraintCount = 0;
+			for (int elveId = 1; elveId <= noOfElves; elveId++) {
+				if (elveId != maxTimeElveId) {
+					contraintCount++;
+					GLPK.glp_add_rows(lp, 1);
+					GLPK.glp_set_row_bnds(lp, contraintCount,
+							GLPKConstants.GLP_LO, 0, 0);
+
+					GLPK.intArray_setitem(constraintsIndices, 2, elveId);
+					GLPK.doubleArray_setitem(constraintsVals, 2, -1
+							* elves[elveId].getLastJobFinishTime());
+
+					int beforeStartElveAssignments = noOfElves + (elveId-1) * noOfToys;
+
+					for (int i = 1; i <= noOfToys; i++) {
+						GLPK.intArray_setitem(constraintsIndices, 2 + noOfToys
+								+ i, beforeStartElveAssignments + i);
+						GLPK.doubleArray_setitem(constraintsVals, 2 + noOfToys
+								+ i, -1 * toys.get(i-1).getIdealEndTime());
+					}
+
+					GLPK.glp_set_mat_row(lp, contraintCount,
+							numOfIndicesElvesConstraint, constraintsIndices,
+							constraintsVals);
+
+				}
+			}
+
+			for (int i = 1; i <= noOfToys; i++) {
 				contraintCount++;
 				GLPK.glp_add_rows(lp, 1);
-				GLPK.glp_set_row_bnds(lp, contraintCount, GLPKConstants.GLP_LO,
-						0, 0);
-
-				GLPK.intArray_setitem(constraintsIndices, 2, elveId);
-				GLPK.doubleArray_setitem(constraintsVals, 2, -1
-						* elves[elveId].getLastJobFinishTime());
-
-				int startElveAssignments = noOfElves + elveId * noOfToys;
-
-				for (int i = 0; i < noOfToys; i++) {
-					GLPK.intArray_setitem(constraintsIndices, 2 + noOfToys
-							+ i + 1, startElveAssignments + i);
-					GLPK.doubleArray_setitem(constraintsVals, 2 + noOfToys
-							+ i + 1, -1 * toys.get(i).getIdealEndTime());
+				GLPK.glp_set_row_bnds(lp, contraintCount, GLPKConstants.GLP_FX,
+						1, 1);
+				for (int j = 1; j <= noOfElves; j++) {
+					GLPK.intArray_setitem(constraintsIndices, j, noOfElves
+							+ ((j - 1) * noOfToys) + i);
+					GLPK.doubleArray_setitem(constraintsVals, j, 1);
 				}
 
-				GLPK.glp_set_mat_row(lp, contraintCount,
-						numOfIndicesElvesConstraint, constraintsIndices,
-						constraintsVals);
-
+				GLPK.glp_set_mat_row(lp, contraintCount, noOfElves,
+						constraintsIndices, constraintsVals);
 			}
-		}
-		
-		
-		for(int i=1;i<=noOfToys;i++)
-		{
-			contraintCount++;
-			GLPK.glp_add_rows(lp, 1);
-			GLPK.glp_set_row_bnds(lp, contraintCount, GLPKConstants.GLP_FX,
-					1, 1);
-			for(int j=1;j<=noOfElves;j++)
+
+			GLPK.glp_set_obj_coef(lp, maxTimeElveId,
+					elves[maxTimeElveId].getLastJobFinishTime());
+
+			for (int i = 1; i <= noOfToys; i++) {
+				GLPK.glp_set_obj_coef(lp, beforeStartOfMaxTimeElveIdAssignments
+						+ i, toys.get(i - 1).getIdealEndTime());
+			}
+
+			GLPK.glp_set_obj_name(lp, "obj");
+			GLPK.glp_set_obj_dir(lp, GLPKConstants.GLP_MIN);
+			GLPK.glp_set_obj_coef(lp, 0, 0);
+			
+			int  status = GLPK.glp_intopt(lp, parmIocp);
+			
+			if(status != 0)
 			{
-				GLPK.intArray_setitem(constraintsIndices, j, noOfElves + ((j-1)*noOfToys)+i);
-				GLPK.doubleArray_setitem(constraintsVals, j, 1);
+				throw new RuntimeException("Problem solving GLPK , error : " + status);
 			}
 			
-			GLPK.glp_set_mat_row(lp, contraintCount,
-					noOfElves, constraintsIndices,
-					constraintsVals);
+			assignments = new List[noOfElves];
+			
+			for(int i=1;i<noOfElves+1;i++)
+			{
+				int beforeStartOfAssignments = noOfElves + (i-1)*noOfToys;
+				List<Toy> elveAssignments = new ArrayList<Toy>();
+				for(int j=1;j<=noOfToys;j++)
+				{
+					double val = GLPK.glp_mip_col_val(lp, beforeStartOfAssignments + j);
+					if(val == 1)
+					{
+						elveAssignments.add(toys.get(j-1));
+					}
+				}
+				
+				Collections.sort(elveAssignments);
+				assignments[i] = elveAssignments;
+			}
+			
+
+		} finally {
+			
+			GLPK.delete_intArray(constraintsIndices);
+			GLPK.delete_doubleArray(constraintsVals);
+			lp.delete();
+			parmIocp.delete();
+
 		}
-		
 
 		return assignments;
 	}
