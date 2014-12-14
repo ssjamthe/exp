@@ -63,6 +63,15 @@
       <artifactId>antlr-runtime</artifactId>
       <version>3.4</version>
     </dependency>
+    
+   
+
+        <dependency>
+            <groupId>org.gnu.glpk</groupId>
+            <artifactId>glpk-java</artifactId>
+            <version>1.0.37</version>
+        </dependency>
+    
 	
   	
   </dependencies>
@@ -97,5 +106,14 @@
     </plugins>
    </pluginManagement>
   </build>
+  
+    <repositories>
+        <repository>
+            <id>XypronRelease</id>
+            <name>Xypron Release</name>
+            <url>http://rsync.xypron.de/repository</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
   
 </project>
