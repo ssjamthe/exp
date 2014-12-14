@@ -44,7 +44,9 @@ public class SimulatedAnnealingHelper {
 
 	}
 
-	public void optimize(Elve[] elves, List<Toy>[] assignments) {
+	public List<Toy>[] optimize(Elve[] elves, List<Toy>[] assignments) {
+
+		assignments = copyAssignments(assignments);
 
 		ObjectiveValueHelper.ObjectiveValueData objData = ObjectiveValueHelper
 				.calculateObjectiveValue(elves, assignments);
@@ -89,9 +91,9 @@ public class SimulatedAnnealingHelper {
 			int totalIterationsAccepted = 0;
 			int totalRandomIterations = 0;
 			int totalRandomAccepted = 0;
-			int totalWeightedRandomIterations = 0; 
+			int totalWeightedRandomIterations = 0;
 			int totalWeightedRandomAccepted = 0;
-			int totalOnlyToElveWeightedRandomIterations = 0; 
+			int totalOnlyToElveWeightedRandomIterations = 0;
 			int totalOnlyToElveWeightedAccepted = 0;
 			int totalWorseIterationsAccepted = 0;
 			int totalWorseIterations = 0;
@@ -371,6 +373,8 @@ public class SimulatedAnnealingHelper {
 			summaryWriter.write("\nexp : 2");
 
 			summaryWriter.close();
+
+			return bestAssignments;
 
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -8,6 +8,7 @@ public class Toy implements Comparable<Toy>{
 	private String toyId;
 	private int arrivalTime;
 	private int timeToBuild;
+	private int idealEndTime;
 	
 	
 	public void setValues(String toyId,String arrivalTime,int timeToBuild)
@@ -15,6 +16,7 @@ public class Toy implements Comparable<Toy>{
 		this.toyId = toyId;
 		this.arrivalTime = TimeHelper.parseTime(arrivalTime);
 		this.timeToBuild = timeToBuild;
+		this.idealEndTime = TimeHelper.getNextStartTime(this.arrivalTime) + timeToBuild;
 	}
 	
 	
@@ -31,6 +33,9 @@ public class Toy implements Comparable<Toy>{
 		return timeToBuild;
 	}
 
+	public int getIdealEndTime() {
+		return idealEndTime;
+	}
 
 
 	@Override
