@@ -72,6 +72,21 @@ public class ToysFileReader {
 		return toys;
 		
 	}
+	
+	public List<Toy> readAllToysInList()
+	{
+		List<Toy> toys = new ArrayList<Toy>(10000000);
+		boolean result = true;
+		while(result)
+		{
+			Toy toy = new Toy();
+			result = readNextToy(toy);
+			toys.add(toy);
+		}
+		
+		return toys;
+		
+	}
 
 	private static void populateToy(String toyStr, Toy toy) {
 		String[] lineSplits = toyStr.split(",");
