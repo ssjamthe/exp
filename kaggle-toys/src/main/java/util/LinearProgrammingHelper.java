@@ -17,8 +17,10 @@ import data.Toy;
 
 public class LinearProgrammingHelper {
 
-	static {
-		System.setProperty("java.library.path", "D:\\glpk-4.55\\w32");
+	/*static {
+		System.out.println("Loading libraries...");
+		String prop = System.getProperty("java.library.path");
+		System.setProperty("java.library.path", "D:\\glpk-4.55\\w32;" + prop);
 
 		try {
 			final Field sysPathsField = ClassLoader.class
@@ -40,7 +42,7 @@ public class LinearProgrammingHelper {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-	}
+	}*/
 
 	/*
 	 * min e1+a11*t1+a12*t2+a13*t3+... Contstraints :
@@ -163,7 +165,7 @@ public class LinearProgrammingHelper {
 				throw new RuntimeException("Problem solving GLPK , error : " + status);
 			}
 			
-			assignments = new List[noOfElves];
+			assignments = new List[noOfElves+1];
 			
 			for(int i=1;i<noOfElves+1;i++)
 			{

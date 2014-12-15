@@ -21,8 +21,6 @@ public class SimulatedAnnealingHelper {
 	private final double weightedRandomWeight;
 	private final double onlyToElveWeightedRandomWeight;
 	private final double acceptSameObjValProb;
-	private final String logDir;
-	private final String logMsg;
 	private static final int TOTALLY_RANDOM_STEP = 1;
 	private static final int WEIGHTED_RANDOM_STEP = 2;
 	private static final int ONLY_TO_ELVE_WEIGHTED_RANDOM_STEP = 3;
@@ -30,7 +28,7 @@ public class SimulatedAnnealingHelper {
 	public SimulatedAnnealingHelper(double maxTemp, double minTemp,
 			double coolingFactor, double totallyRandomWeight,
 			double weightedRandomWeight, double onlyToElveWeightedRandomWeight,
-			double acceptSameObjValProb, String logDir, String logMsg) {
+			double acceptSameObjValProb) {
 
 		this.maxTemp = maxTemp;
 		this.minTemp = minTemp;
@@ -39,12 +37,10 @@ public class SimulatedAnnealingHelper {
 		this.weightedRandomWeight = weightedRandomWeight;
 		this.onlyToElveWeightedRandomWeight = onlyToElveWeightedRandomWeight;
 		this.acceptSameObjValProb = acceptSameObjValProb;
-		this.logDir = logDir;
-		this.logMsg = logMsg;
 
 	}
 
-	public List<Toy>[] optimize(Elve[] elves, List<Toy>[] assignments) {
+	public List<Toy>[] optimize(Elve[] elves, List<Toy>[] assignments,String logDir, String logMsg) {
 
 		assignments = copyAssignments(assignments);
 

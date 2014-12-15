@@ -20,7 +20,7 @@ public class ToysFileReader {
 		try {
 			bufferedReader = new BufferedReader(
 					new FileReader(
-							"D:\\Kaggle\\HelpingSantasHelpers\\toys_rev2\\toys_rev2.csv"));
+							"D:\\Kaggle\\HelpingSantasHelpers\\toys_rev2\\demo.csv"));
 			bufferedReader.readLine();
 		} catch (FileNotFoundException e) {
 
@@ -73,9 +73,9 @@ public class ToysFileReader {
 		
 	}
 	
-	public List<Toy> readAllToysInList()
+	public ArrayList<Toy> readAllToysInList()
 	{
-		List<Toy> toys = new ArrayList<Toy>(10000000);
+		ArrayList<Toy> toys = new ArrayList<Toy>(10000000);
 		boolean result = true;
 		while(result)
 		{
