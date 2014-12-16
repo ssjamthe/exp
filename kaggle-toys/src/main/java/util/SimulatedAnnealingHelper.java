@@ -1,6 +1,7 @@
 package util;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +41,13 @@ public class SimulatedAnnealingHelper {
 
 	}
 
-	public List<Toy>[] optimize(Elve[] elves, List<Toy>[] assignments,String logDir, String logMsg) {
+	public List<Toy>[] optimize(Elve[] elves, List<Toy>[] assignments,
+			String logDir, String logMsg) {
+
+		File logDirFile = new File(logDir);
+		if (!logDirFile.exists()) {
+			logDirFile.mkdir();
+		}
 
 		assignments = copyAssignments(assignments);
 
@@ -112,7 +119,7 @@ public class SimulatedAnnealingHelper {
 			int bestAssignmentsMaxTime = objData.endTime;
 			int bestAssignmentsMaxTimeElvdId = objData.maxEndTimeElveId;
 
-			RandomSelector<Integer> stepSelector = new RandomSelector<Integer>();
+			RandomSelectorWithoutReplacement<Integer> stepSelector = new RandomSelectorWithoutReplacement<Integer>();
 			if (totallyRandomWeight != 0) {
 				stepSelector.addElement(TOTALLY_RANDOM_STEP,
 						totallyRandomWeight);
@@ -137,7 +144,7 @@ public class SimulatedAnnealingHelper {
 							+ "..." + logMsg);
 				}
 
-				int selectedStep = stepSelector.selectElement();
+				int selectedStep = stepSelector.selectElement(true);
 
 				int fromElveId;
 				int toElveId;
@@ -148,6 +155,9 @@ public class SimulatedAnnealingHelper {
 
 					fromElveId = random.nextInt(900) + 1;
 					toElveId = random.nextInt(900) + 1;
+					while (toElveId == fromElveId) {
+						toElveId = random.nextInt(900) + 1;
+					}
 					break;
 				case WEIGHTED_RANDOM_STEP:
 					totalWeightedRandomIterations++;
@@ -160,6 +170,11 @@ public class SimulatedAnnealingHelper {
 
 					fromElveId = maxEndtimeEvleId;
 					toElveId = toElveSelector.selectElement();
+					while (toElveId == fromElveId) {
+						toElveSelector.addElement(toElveId,
+								elves[toElveId].getLastJobFinishTime());
+						toElveId = toElveSelector.selectElement();
+					}
 					break;
 				default:
 					throw new RuntimeException("Should not reach here...");
@@ -168,7 +183,7 @@ public class SimulatedAnnealingHelper {
 
 				if (fromElveId == toElveId) {
 					numOfSameTransferElves++;
-					continue;
+					// continue;
 				}
 
 				int numFromElveAssignments = assignments[fromElveId].size();
@@ -268,6 +283,9 @@ public class SimulatedAnnealingHelper {
 					zeroToysFromElveId++;
 
 				}
+
+				// System.out.println("to elve selector size : " +
+				// toElveSelector.size());
 
 				switch (selectedStep) {
 				case TOTALLY_RANDOM_STEP:

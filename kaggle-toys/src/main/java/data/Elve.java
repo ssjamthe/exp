@@ -47,58 +47,7 @@ public class Elve implements Cloneable{
 	}
 	
 	
-	private static int getSanctionedTimeForDuration(int startTime,int duration)
-	{
-		int fullDays = duration/MIN_IN_DAY;
-		int sanctioned = SACNTIONED_IN_DAY * fullDays;
-		
-		int remainderStart = startTime + fullDays*MIN_IN_DAY;
-		
-		return sanctioned + getSanctionedMinsForRange(remainderStart,startTime + duration);
-	}
 	
-	/*
-	 * startTime and endTime should belong to single day
-	 */
-	private static int getSanctionedMinsForRange(int startTime,int endTime)
-	{
-		int dayStart = startTime - startTime%MIN_IN_DAY;
-		int startSanctionedTime = dayStart + START_SANCTIONED_IN_DAY;
-		int endSanctionedTime = dayStart + END_SANCTIONED_IN_DAY;
-		
-		
-		if(startTime >= startSanctionedTime && startTime<=endSanctionedTime)
-		{
-			if(endTime <= endSanctionedTime)
-			{
-				return endTime - startTime;
-			}
-			else
-			{
-				return endSanctionedTime - startTime;
-			}
-		}
-		else if(startTime<=startSanctionedTime)
-		{
-			if(endTime <= startSanctionedTime)
-			{
-				return 0;
-			}
-			else if(endTime <= endSanctionedTime)
-			{
-				return endTime - startSanctionedTime;
-			}
-			else
-			{
-				return endSanctionedTime - startSanctionedTime;
-			}
-		}
-		else
-		{
-			return 0;
-		}
-		
-	}
 	
 	
 	public Elve(int id)
@@ -146,7 +95,7 @@ public class Elve implements Cloneable{
 		int startTime = toy.getArrivalTime() > this.nextAvailableTime?toy.getArrivalTime():this.nextAvailableTime;
 		startTime = TimeHelper.getNextStartTime(startTime);
 		int timeRequired = (int) Math.ceil(toy.getTimeToBuild()/this.rating);
-		int sanctionedMinutes = getSanctionedTimeForDuration(startTime, timeRequired);
+		int sanctionedMinutes = TimeHelper.getSanctionedTimeForDuration(startTime, timeRequired);
 		int unsanctionedMinutes = timeRequired - sanctionedMinutes;
 		updateRating(sanctionedMinutes,unsanctionedMinutes);
 		updateAvailableTime(startTime, sanctionedMinutes, unsanctionedMinutes);

@@ -28,6 +28,16 @@ public class RandomSelectorWithoutReplacement<K> {
 	}
 
 	public K selectElement() {
+
+		return selectElement(false);
+	}
+	
+	public int size()
+	{
+		return list.size();
+	}
+
+	public K selectElement(boolean replace) {
 		if (list.isEmpty())
 			throw new IllegalStateException("Empty selector..");
 
@@ -41,15 +51,17 @@ public class RandomSelectorWithoutReplacement<K> {
 			double start = lastEnd;
 			double end = lastEnd + entry.weight;
 			if (rand >= start && rand < end) {
-				iter.remove();
-				sumOfWeights = sumOfWeights - entry.weight;
+				if (!replace) {
+					iter.remove();
+					sumOfWeights = sumOfWeights - entry.weight;
+				}
 				return entry.element;
 			}
 			lastEnd = end;
 		}
 
-		throw new IllegalStateException("Should not reach here... rand : " + rand + ", sum of weights : " + lastEnd);
-
+		throw new IllegalStateException("Should not reach here... rand : "
+				+ rand + ", sum of weights : " + lastEnd);
 	}
 
 }

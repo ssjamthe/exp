@@ -39,7 +39,6 @@ public class JobTransferHelper {
 				toElve.work(toy);
 			}
 		}
-
 		
 			for (Toy currToy : fromElveAssignments) {
 				if (!toy.getToyId().equals(currToy.getToyId())) {

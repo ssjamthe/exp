@@ -9,14 +9,23 @@ public class Toy implements Comparable<Toy>{
 	private int arrivalTime;
 	private int timeToBuild;
 	private int idealEndTime;
+	private int idealStartTime;
 	
+	
+	public Toy()
+	{
+		
+	}
 	
 	public void setValues(String toyId,String arrivalTime,int timeToBuild)
 	{
+		if(toyId == null)
+			throw new RuntimeException("toy id is null");
 		this.toyId = toyId;
 		this.arrivalTime = TimeHelper.parseTime(arrivalTime);
 		this.timeToBuild = timeToBuild;
-		this.idealEndTime = TimeHelper.getNextStartTime(this.arrivalTime) + timeToBuild;
+		this.idealStartTime = TimeHelper.getNextStartTime(this.arrivalTime);
+		this.idealEndTime = idealStartTime + timeToBuild;
 	}
 	
 	
@@ -36,6 +45,11 @@ public class Toy implements Comparable<Toy>{
 	public int getIdealEndTime() {
 		return idealEndTime;
 	}
+
+	public int getIdealStartTime() {
+		return idealStartTime;
+	}
+
 
 
 	@Override
@@ -72,6 +86,15 @@ public class Toy implements Comparable<Toy>{
 		
 		return this.arrivalTime - o.arrivalTime;
 	}
+
+	@Override
+	public String toString() {
+		return "Toy [toyId=" + toyId + ", arrivalTime=" + arrivalTime
+				+ ", timeToBuild=" + timeToBuild + ", idealEndTime="
+				+ idealEndTime + ", idealStartTime=" + idealStartTime + "]";
+	}
+	
+	
 
 	
 	

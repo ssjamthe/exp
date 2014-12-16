@@ -18,16 +18,15 @@ public class ToysFileReader {
 
 	public ToysFileReader() {
 		try {
-			bufferedReader = new BufferedReader(
-					new FileReader(
-							"D:\\Kaggle\\HelpingSantasHelpers\\toys_rev2\\demo.csv"));
+			bufferedReader = new BufferedReader(new FileReader(
+					"D:\\Kaggle\\HelpingSantasHelpers\\toys_rev2\\toys_rev2.csv"));
 			bufferedReader.readLine();
 		} catch (FileNotFoundException e) {
 
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
@@ -42,12 +41,11 @@ public class ToysFileReader {
 
 			populateToy(line, toy);
 			toysRead++;
-			
-			if(toysRead % 10000 == 0)
-			{
+
+			if (toysRead % 10000 == 0) {
 				System.out.println("Toys read = " + toysRead);
 			}
-			
+
 			return true;
 
 		} catch (IOException e) {
@@ -57,35 +55,35 @@ public class ToysFileReader {
 		}
 
 	}
-	
-	public Map<String,Toy> readAllToys()
-	{
-		Map<String,Toy> toys = new HashMap<String,Toy>(10000000);
+
+	public Map<String, Toy> readAllToys() {
+		Map<String, Toy> toys = new HashMap<String, Toy>(10000000);
 		boolean result = true;
-		while(result)
-		{
+		while (result) {
 			Toy toy = new Toy();
 			result = readNextToy(toy);
-			toys.put(toy.getToyId(), toy);
+			if (result) {
+				toys.put(toy.getToyId(), toy);
+			}
 		}
-		
+
 		return toys;
-		
+
 	}
-	
-	public ArrayList<Toy> readAllToysInList()
-	{
+
+	public ArrayList<Toy> readAllToysInList() {
 		ArrayList<Toy> toys = new ArrayList<Toy>(10000000);
 		boolean result = true;
-		while(result)
-		{
+		while (result) {
 			Toy toy = new Toy();
 			result = readNextToy(toy);
-			toys.add(toy);
+			if (result) {
+				toys.add(toy);
+			}
 		}
-		
+
 		return toys;
-		
+
 	}
 
 	private static void populateToy(String toyStr, Toy toy) {
