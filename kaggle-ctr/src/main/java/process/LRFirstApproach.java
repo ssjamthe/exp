@@ -1,7 +1,10 @@
 package process;
 
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -12,21 +15,31 @@ import org.apache.mahout.classifier.sgd.OnlineLogisticRegression;
 import util.AdsFileReader;
 import util.IndexedFeatureClassifier;
 import util.IndexedFeatureTrainer;
+import util.ModelEvaluator;
+import util.ModelEvaluator.ModelEvaluationResult;
 import util.ProcessedAdsFileCreator;
 
 import data.Feature;
 import data.Field;
 
 public class LRFirstApproach {
+	
 
-	public static void main(String args[]) {
-		String trainingFile = "D:\\Kaggle\\AvazuCtrPrediction\\train\\train.csv";
-		String trainingIndicesFile = "D:\\Kaggle\\AvazuCtrPrediction\\processed\\firstApproach\\trainFile.txt";
+	public static void main(String args[]) throws IOException {
+		String trainingFile = "D:\\Kaggle\\AvazuCtrPrediction\\train\\2014_12_17_18_58\\trainingSet.txt";
+		//String trainingFile = "D:\\Kaggle\\AvazuCtrPrediction\\train\\demo.csv";
+		String trainingIndicesFile = "D:\\Kaggle\\AvazuCtrPrediction\\processed\\firstApproach\\trainSetIndices.txt";
+		String heldOutFile = "D:\\Kaggle\\AvazuCtrPrediction\\train\\2014_12_17_18_58\\heldOutSet.txt";
+		//String heldOutFile = "D:\\Kaggle\\AvazuCtrPrediction\\train\\demo.csv";
+		String heldOutIndicesFile = "D:\\Kaggle\\AvazuCtrPrediction\\processed\\firstApproach\\heldOutSetIndices.txt";
 		String indicesFile = "D:\\Kaggle\\AvazuCtrPrediction\\processed\\firstApproach\\indices.txt";
 		String modelFile = "D:\\Kaggle\\AvazuCtrPrediction\\processed\\firstApproach\\model.ser";
 		String processedTestFile = "D:\\Kaggle\\AvazuCtrPrediction\\processed\\firstApproach\\test.txt";
 		String inputTestFile = "D:\\Kaggle\\AvazuCtrPrediction\\test\\test_converted.csv";
+		//String inputTestFile = "D:\\Kaggle\\AvazuCtrPrediction\\test\\head_test_converted.csv";
 		String predictedOutputFile = "D:\\Kaggle\\AvazuCtrPrediction\\processed\\firstApproach\\predicted.csv"; 
+		String summaryFile = "D:\\Kaggle\\AvazuCtrPrediction\\processed\\firstApproach\\summary.txt";
+		String lineSeparator = System.getProperty("line.separator");
 
 		List<Feature> features = new ArrayList<Feature>();
 		features.add(new Feature(new Field[] { Field.BANNER_POS, Field.C15,
@@ -115,16 +128,16 @@ public class LRFirstApproach {
 		features.add(new Feature(new Field[] { Field.DEVICE_TYPE }));
 		features.add(new Feature(new Field[] { Field.DEVICE_CONN_TYPE }));
 
-		ProcessedAdsFileCreator trianFileCreator = new ProcessedAdsFileCreator();
-		int maxIndex = trianFileCreator.createFile(features,trainingFile,
+		ProcessedAdsFileCreator processedFileCreator = new ProcessedAdsFileCreator();
+		int maxIndex = processedFileCreator.createFile(features,trainingFile,
 				trainingIndicesFile, indicesFile);
 
 		IndexedFeatureTrainer trainer = new IndexedFeatureTrainer();
 		OnlineLogisticRegression model = trainer
-				.trainByOnlineLogisticRegression(features,trainingIndicesFile,
+				.trainByOnlineLogisticRegression(trainingIndicesFile,
 						maxIndex + 1);
 		try {
-			model.write(new ObjectOutputStream(new FileOutputStream(modelFile)));
+			model.write(new DataOutputStream(new FileOutputStream(modelFile)));
 		} catch (FileNotFoundException e) {
 
 			e.printStackTrace();
@@ -133,7 +146,19 @@ public class LRFirstApproach {
 			e.printStackTrace();
 		}
 		
-		trianFileCreator.createFileFromIndices(features, inputTestFile, processedTestFile, indicesFile);
+		processedFileCreator.createFileFromIndices(features, heldOutFile, heldOutIndicesFile, indicesFile);
+		ModelEvaluator evaluator = new ModelEvaluator();
+		ModelEvaluationResult resultTraining = evaluator.eveluateIndexedFeatureClassifier(trainingIndicesFile, maxIndex + 1, model);
+		
+		ModelEvaluationResult resultHeldOut = evaluator.eveluateIndexedFeatureClassifier(heldOutIndicesFile, maxIndex + 1, model);
+		
+		BufferedWriter resultWriter = new BufferedWriter(new FileWriter(summaryFile));
+		resultWriter.write("max Index " + maxIndex + lineSeparator);
+		resultWriter.write("resultTraining " + resultTraining + lineSeparator);
+		resultWriter.write("resultHeldOut " + resultHeldOut + lineSeparator);
+		resultWriter.close();
+		
+		processedFileCreator.createFileFromIndices(features, inputTestFile, processedTestFile, indicesFile);
 		
 		IndexedFeatureClassifier classifer = new IndexedFeatureClassifier();
 		classifer.classify(processedTestFile, maxIndex + 1, model, predictedOutputFile);
